@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool</title>
+<meta name="description" content="Free IP Subnet Calculator for IPv4 and IPv6. Calculate network address, subnet mask, broadcast, CIDR, usable hosts and IP ranges instantly. Fast, accurate, no signup needed.">
+<meta name="keywords" content="ip subnet calculator, cidr calculator, subnet mask calculator, ipv4 calculator, ipv6 subnet calculator, network calculator, vlsm calculator">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://yoursite.com/">
+
+<!-- Open Graph -->
+<meta property="og:title" content="IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool">
+<meta property="og:description" content="Calculate subnet masks, CIDR ranges, usable hosts and broadcast addresses instantly. Free tool for network engineers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yoursite.com/">
+
+<!-- Schema Markup: SoftwareApplication + FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "IP Subnet Calculator",
+      "applicationCategory": "NetworkingApplication",
+      "operatingSystem": "Web Browser",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free IP Subnet Calculator supporting IPv4 and IPv6 with CIDR notation, subnet masks, usable host ranges, and broadcast addresses.",
+      "url": "https://yoursite.com/"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a subnet calculator?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A subnet calculator divides an IP network into smaller sub-networks. It calculates the network address, broadcast address, usable host range, and subnet mask from a given IP address and prefix length." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does /24 mean in IP addressing?",
+          "acceptedAnswer": { "@type": "Answer", "text": "/24 means 24 bits are used for the network portion, leaving 8 bits for hosts. A /24 subnet has 254 usable host addresses and a subnet mask of 255.255.255.0." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I calculate subnets for IPv6?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For IPv6, enter your address in standard notation (e.g., 2001:db8::1) with a prefix length from /1 to /128. The calculator will show the network address, host range, and total addresses." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #30363d;
+    --accent: #00d4aa;
+    --accent2: #0077ff;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --success: #1a7f4b;
+    --success-bg: #0d2818;
+    --success-text: #3fb950;
+    --error: #f85149;
+    --error-bg: #2d0f0f;
+    --radius: 10px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --text3: #8c959f;
+    --success-bg: #dafbe1;
+    --success-text: #1a7f37;
+    --error-bg: #ffebe9;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .theme-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 15px;
+    padding: 5px 10px;
+    transition: all 0.2s;
+  }
+  .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+  nav a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 3rem 1.5rem 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.3);
+    color: var(--accent);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+  }
+  h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--text2);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* TABS */
+  .tabs-wrap { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-bottom: 1.25rem;
+    width: fit-content;
+  }
+  .tab {
+    padding: 7px 20px;
+    border-radius: 7px;
+    border: none;
+    background: none;
+    color: var(--text2);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab.active {
+    background: var(--accent);
+    color: #0d1117;
+    font-weight: 700;
+  }
+  .tab:not(.active):hover { color: var(--text); background: var(--surface2); }
+
+  /* CALCULATOR CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* INPUTS */
+  .input-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 12px; }
+  .input-group { display: flex; flex-direction: column; gap: 5px; }
+  label { font-size: 12px; font-weight: 600; color: var(--text2); letter-spacing: 0.3px; }
+  input[type="text"], select {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: var(--mono);
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  input[type="text"]:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,212,170,0.12);
+  }
+  input[type="text"].error { border-color: var(--error); box-shadow: 0 0 0 3px rgba(248,81,73,0.12); }
+  .error-msg { color: var(--error); font-size: 12px; margin-top: 3px; display: none; }
+  .error-msg.show { display: block; }
+  select {
+    font-family: var(--font);
+    cursor: pointer;
+    min-width: 90px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+  }
+  .btn-calc {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    border: none;
+    border-radius: 8px;
+    color: #0d1117;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    margin-top: 4px;
+  }
+  .btn-calc:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,170,0.35); }
+  .btn-calc:active { transform: translateY(0); }
+
+  /* RESULTS */
+  .results { display: none; }
+  .results.show { display: block; }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .result-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: border-color 0.2s;
+  }
+  .result-item:hover { border-color: var(--accent); }
+  .result-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .result-value {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 600;
+    word-break: break-all;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .copy-btn {
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .copy-btn:hover { color: var(--accent); }
+  .result-item.highlight { border-color: var(--accent); background: rgba(0,212,170,0.05); }
+  .cidr-bar {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .cidr-bar-label { font-size: 12px; color: var(--text3); margin-bottom: 8px; }
+  .cidr-visual { display: flex; height: 24px; border-radius: 5px; overflow: hidden; }
+  .cidr-net { background: linear-gradient(90deg, var(--accent), #00b894); display: flex; align-items: center; justify-content: center; font-size: 11px; color: #0d1117; font-weight: 700; }
+  .cidr-host { background: rgba(0,119,255,0.25); border: 1px solid rgba(0,119,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--accent2); font-weight: 600; }
+  .cidr-legend { display: flex; gap: 14px; margin-top: 8px; font-size: 11px; color: var(--text3); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; }
+
+  /* SUBNET TABLE */
+  .table-wrap { overflow-x: auto; margin-top: 0.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: var(--surface2);
+    color: var(--text2);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 9px 12px; font-family: var(--mono); font-size: 12px; color: var(--text); }
+  tbody td:first-child { font-family: var(--font); font-weight: 600; color: var(--accent); font-size: 13px; }
+  .hosts-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-family: var(--font);
+    color: var(--text2);
+  }
+
+  /* FAQ */
+  .faq-section { max-width: 900px; margin: 0 auto 2rem; padding: 0 1rem; }
+  .faq-section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 14px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--accent); font-size: 18px; font-weight: 400; }
+  details[open] summary::after { content: '−'; }
+  details p { padding: 0 18px 14px; color: var(--text2); font-size: 14px; line-height: 1.7; }
+
+  /* CONTENT */
+  .content-section { max-width: 900px; margin: 0 auto 2rem; padding: 0 1rem; }
+  .content-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+  .content-section p { color: var(--text2); font-size: 14px; line-height: 1.8; margin-bottom: 1rem; }
+  .content-section h3 { font-size: 1.05rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: var(--text); }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text3);
+    font-size: 13px;
+  }
+  footer a { color: var(--text2); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--success-bg);
+    border: 1px solid var(--success-text);
+    color: var(--success-text);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transform: translateY(60px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 600px) {
+    .input-row { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 1.75rem 1rem 1.25rem; }
+    nav { display: none; }
+    header { padding: 0 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">
+    <div class="logo-icon">🌐</div>
+    SubnetCalc
+  </a>
+  <nav>
+    <a href="#ipv4">IPv4</a>
+    <a href="#ipv6">IPv6</a>
+    <a href="#table">Subnet Table</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="header-right">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle light/dark mode">☀️</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-badge">Free Network Tool</div>
+    <h1>IP <span>Subnet</span> Calculator</h1>
+    <p>Instantly calculate network address, subnet mask, broadcast, CIDR range, and usable hosts for IPv4 and IPv6 networks.</p>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('ipv4', this)">IPv4</button>
+      <button class="tab" onclick="switchTab('ipv6', this)">IPv6</button>
+      <button class="tab" onclick="switchTab('table', this)">Subnet Table</button>
+    </div>
+
+    <!-- IPv4 TAB -->
+    <div id="tab-ipv4">
+      <div class="card" id="ipv4">
+        <div class="card-title">IPv4 Subnet Calculator</div>
+        <div class="input-row">
+          <div class="input-group">
+            <label for="ip4">IP Address</label>
+            <input type="text" id="ip4" placeholder="192.168.1.0" maxlength="15" oninput="clearError('ip4')">
+            <span class="error-msg" id="ip4-err">Enter a valid IPv4 address (e.g., 192.168.1.0)</span>
+          </div>
+          <div class="input-group">
+            <label for="cidr4">Prefix</label>
+            <select id="cidr4"></select>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcIPv4()">Calculate Subnet</button>
+      </div>
+
+      <div class="card results" id="results4">
+        <div class="card-title">Results</div>
+        <div class="cidr-bar">
+          <div class="cidr-bar-label">Bit allocation visualization</div>
+          <div class="cidr-visual" id="cidr-visual"></div>
+          <div class="cidr-legend">
+            <span><span class="legend-dot" style="background:var(--accent)"></span>Network bits</span>
+            <span><span class="legend-dot" style="background:rgba(0,119,255,0.4)"></span>Host bits</span>
+          </div>
+        </div>
+        <div class="results-grid" id="results4-grid"></div>
+      </div>
+    </div>
+
+    <!-- IPv6 TAB -->
+    <div id="tab-ipv6" style="display:none">
+      <div class="card" id="ipv6">
+        <div class="card-title">IPv6 Subnet Calculator</div>
+        <div class="input-row">
+          <div class="input-group">
+            <label for="ip6">IPv6 Address</label>
+            <input type="text" id="ip6" placeholder="2001:db8::1" oninput="clearError('ip6')">
+            <span class="error-msg" id="ip6-err">Enter a valid IPv6 address</span>
+          </div>
+          <div class="input-group">
+            <label for="cidr6">Prefix</label>
+            <select id="cidr6"></select>
+          </div>
+        </div>
+        <button class="btn-calc" onclick="calcIPv6()">Calculate IPv6 Subnet</button>
+      </div>
+      <div class="card results" id="results6">
+        <div class="card-title">IPv6 Results</div>
+        <div class="results-grid" id="results6-grid"></div>
+      </div>
+    </div>
+
+    <!-- SUBNET TABLE TAB -->
+    <div id="tab-table" style="display:none">
+      <div class="card" id="table">
+        <div class="card-title">IPv4 Subnet Reference Table</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Prefix</th>
+                <th>Subnet Mask</th>
+                <th>Network Bits</th>
+                <th>Host Bits</th>
+                <th>Usable Hosts</th>
+                <th>Total IPs</th>
+              </tr>
+            </thead>
+            <tbody id="subnet-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEO CONTENT -->
+  <div class="content-section">
+    <h2>What is an IP Subnet Calculator?</h2>
+    <p>An IP subnet calculator is a tool used by network engineers, system administrators, and IT professionals to divide an IP network into smaller, more manageable sub-networks (subnets). By entering an IP address and a prefix length (CIDR notation), the calculator instantly returns the network address, broadcast address, subnet mask, usable host range, and total number of addresses.</p>
+    <h3>Why is subnetting important?</h3>
+    <p>Subnetting improves network performance by reducing broadcast traffic, enhances security by isolating network segments, and allows efficient use of IP address space. It is a fundamental skill for anyone working with TCP/IP networks, whether on-premise or in cloud environments like AWS, Azure, and GCP.</p>
+    <h3>How to use CIDR notation</h3>
+    <p>CIDR (Classless Inter-Domain Routing) notation expresses an IP address and its network prefix together, for example <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:13px">192.168.1.0/24</code>. The number after the slash (/24) tells you how many bits are reserved for the network. The remaining bits are available for host addresses.</p>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <details open>
+      <summary>What is a subnet mask?</summary>
+      <p>A subnet mask is a 32-bit number that separates the network portion of an IP address from the host portion. For example, the subnet mask 255.255.255.0 (or /24 in CIDR) means the first 24 bits identify the network and the last 8 bits identify hosts within that network.</p>
+    </details>
+    <details>
+      <summary>What does /24 mean in networking?</summary>
+      <p>A /24 prefix means 24 out of 32 bits are used for the network address. This leaves 8 bits for host addresses, allowing for 256 total IPs — of which 254 are usable (the first is the network address and the last is the broadcast address). The subnet mask for /24 is 255.255.255.0.</p>
+    </details>
+    <details>
+      <summary>What is the difference between IPv4 and IPv6?</summary>
+      <p>IPv4 uses 32-bit addresses and supports approximately 4.3 billion unique addresses. IPv6 uses 128-bit addresses, providing an astronomically larger address space (340 undecillion addresses). IPv6 also eliminates the need for NAT, simplifies routing, and includes built-in security features.</p>
+    </details>
+    <details>
+      <summary>How many usable hosts are in a /24 subnet?</summary>
+      <p>A /24 subnet contains 256 IP addresses total. Of these, 254 are usable for hosts — the network address (first IP) and broadcast address (last IP) are reserved and cannot be assigned to devices.</p>
+    </details>
+    <details>
+      <summary>What is a broadcast address?</summary>
+      <p>The broadcast address is the last IP address in a subnet. Packets sent to this address are received by all hosts in the subnet. It is always reserved and cannot be assigned to a device. For a /24 network like 192.168.1.0, the broadcast address is 192.168.1.255.</p>
+    </details>
+  </div>
+</main>
+
+<footer>
+  <p>SubnetCalc — Free IP Subnet Calculator &nbsp;·&nbsp; <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">About</a></p>
+  <p style="margin-top:6px;font-size:11px">© 2026 SubnetCalc. Built for network engineers worldwide.</p>
+</footer>
+
+<div class="toast" id="toast">✓ Copied to clipboard</div>
+
+<script>
+// INIT
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+  
+  // Populate CIDR dropdowns
+  const sel4 = document.getElementById('cidr4');
+  for (let i = 1; i <= 32; i++) {
+    const o = new Option('/' + i, i);
+    if (i === 24) o.selected = true;
+    sel4.add(o);
+  }
+  const sel6 = document.getElementById('cidr6');
+  for (let i = 1; i <= 128; i++) {
+    const o = new Option('/' + i, i);
+    if (i === 64) o.selected = true;
+    sel6.add(o);
+  }
+
+  // Build subnet table
+  const masks = [
+    [128,0,0,0],[192,0,0,0],[224,0,0,0],[240,0,0,0],[248,0,0,0],[252,0,0,0],[254,0,0,0],
+    [255,0,0,0],[255,128,0,0],[255,192,0,0],[255,224,0,0],[255,240,0,0],[255,248,0,0],[255,252,0,0],[255,254,0,0],[255,255,0,0],
+    [255,255,128,0],[255,255,192,0],[255,255,224,0],[255,255,240,0],[255,255,248,0],[255,255,252,0],[255,255,254,0],[255,255,255,0],
+    [255,255,255,128],[255,255,255,192],[255,255,255,224],[255,255,255,240],[255,255,255,248],[255,255,255,252],[255,255,255,254],[255,255,255,255]
+  ];
+  const tbody = document.getElementById('subnet-table-body');
+  masks.forEach((m, idx) => {
+    const prefix = idx + 1;
+    const hostBits = 32 - prefix;
+    const total = Math.pow(2, hostBits);
+    const usable = total > 2 ? total - 2 : 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>/${prefix}</td><td>${m.join('.')}</td><td>${prefix}</td><td>${hostBits}</td><td>${usable.toLocaleString()}</td><td>${total.toLocaleString()}</td>`;
+    tbody.appendChild(tr);
+  });
+})();
+
+function toggleTheme() {
+  const isLight = document.body.getAttribute('data-theme') === 'light';
+  document.body.setAttribute('data-theme', isLight ? '' : 'light');
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+  document.querySelector('.theme-btn').textContent = isLight ? '☀️' : '🌙';
+}
+
+function switchTab(name, btn) {
+  ['ipv4','ipv6','table'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function clearError(id) {
+  document.getElementById(id).classList.remove('error');
+  document.getElementById(id + '-err').classList.remove('show');
+}
+
+function showError(id) {
+  document.getElementById(id).classList.add('error');
+  document.getElementById(id + '-err').classList.add('show');
+}
+
+// IPv4 CALCULATOR
+function isValidIP4(ip) {
+  const p = ip.split('.');
+  if (p.length !== 4) return false;
+  return p.every(n => n !== '' && !isNaN(n) && +n >= 0 && +n <= 255);
+}
+
+function ipToInt(ip) {
+  return ip.split('.').reduce((acc, v) => (acc << 8) + parseInt(v), 0) >>> 0;
+}
+
+function intToIp(n) {
+  return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+}
+
+function calcIPv4() {
+  const ipVal = document.getElementById('ip4').value.trim();
+  const prefix = parseInt(document.getElementById('cidr4').value);
+  if (!isValidIP4(ipVal)) { showError('ip4'); return; }
+
+  const ip = ipToInt(ipVal);
+  const mask = prefix === 0 ? 0 : (0xFFFFFFFF << (32 - prefix)) >>> 0;
+  const network = (ip & mask) >>> 0;
+  const broadcast = (network | (~mask >>> 0)) >>> 0;
+  const hostBits = 32 - prefix;
+  const totalHosts = Math.pow(2, hostBits);
+  const usableHosts = totalHosts > 2 ? totalHosts - 2 : 0;
+  const firstHost = totalHosts > 2 ? intToIp(network + 1) : 'N/A';
+  const lastHost = totalHosts > 2 ? intToIp(broadcast - 1) : 'N/A';
+
+  // CIDR visual
+  const pct = (prefix / 32 * 100).toFixed(1);
+  const hpct = (100 - pct).toFixed(1);
+  document.getElementById('cidr-visual').innerHTML =
+    `<div class="cidr-net" style="width:${pct}%">${pct > 20 ? prefix + ' bits' : ''}</div>` +
+    `<div class="cidr-host" style="width:${hpct}%">${hpct > 15 ? hostBits + ' bits' : ''}</div>`;
+
+  const items = [
+    { label: 'IP Address', val: ipVal, highlight: false },
+    { label: 'Network Address', val: intToIp(network), highlight: true },
+    { label: 'Subnet Mask', val: intToIp(mask), highlight: false },
+    { label: 'Broadcast Address', val: intToIp(broadcast), highlight: false },
+    { label: 'CIDR Notation', val: intToIp(network) + '/' + prefix, highlight: true },
+    { label: 'First Usable Host', val: firstHost, highlight: false },
+    { label: 'Last Usable Host', val: lastHost, highlight: false },
+    { label: 'Usable Hosts', val: usableHosts.toLocaleString(), highlight: true },
+    { label: 'Total Addresses', val: totalHosts.toLocaleString(), highlight: false },
+    { label: 'Host Bits', val: hostBits + ' bits', highlight: false },
+    { label: 'Wildcard Mask', val: intToIp(~mask >>> 0), highlight: false },
+    { label: 'IP Class', val: getIPClass(ipVal), highlight: false },
+  ];
+
+  const grid = document.getElementById('results4-grid');
+  grid.innerHTML = items.map(i =>
+    `<div class="result-item${i.highlight ? ' highlight' : ''}">
+      <div class="result-label">${i.label}</div>
+      <div class="result-value">
+        <span>${i.val}</span>
+        <button class="copy-btn" onclick="copyText('${i.val}')" title="Copy" aria-label="Copy ${i.label}">⎘</button>
+      </div>
+    </div>`
+  ).join('');
+
+  const res = document.getElementById('results4');
+  res.classList.add('show');
+  res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function getIPClass(ip) {
+  const first = parseInt(ip.split('.')[0]);
+  if (first < 128) return 'Class A';
+  if (first < 192) return 'Class B';
+  if (first < 224) return 'Class C';
+  if (first < 240) return 'Class D (Multicast)';
+  return 'Class E (Reserved)';
+}
+
+// IPv6 CALCULATOR
+function calcIPv6() {
+  const ipVal = document.getElementById('ip6').value.trim();
+  const prefix = parseInt(document.getElementById('cidr6').value);
+
+  try {
+    const expanded = expandIPv6(ipVal);
+    if (!expanded) throw new Error();
+    const hostBits = 128 - prefix;
+    const totalStr = hostBits > 50 ? '2^' + hostBits : Math.pow(2, hostBits).toLocaleString();
+    const netAddr = getIPv6Network(expanded, prefix);
+
+    const items = [
+      { label: 'IPv6 Address', val: ipVal },
+      { label: 'Expanded Address', val: expanded },
+      { label: 'Network Address', val: netAddr + '/' + prefix },
+      { label: 'Prefix Length', val: '/' + prefix },
+      { label: 'Network Bits', val: prefix + ' bits' },
+      { label: 'Host Bits', val: hostBits + ' bits' },
+      { label: 'Total Addresses', val: totalStr },
+    ];
+    const grid = document.getElementById('results6-grid');
+    grid.innerHTML = items.map(i =>
+      `<div class="result-item">
+        <div class="result-label">${i.label}</div>
+        <div class="result-value">
+          <span>${i.val}</span>
+          <button class="copy-btn" onclick="copyText('${i.val}')" title="Copy" aria-label="Copy ${i.label}">⎘</button>
+        </div>
+      </div>`
+    ).join('');
+    document.getElementById('results6').classList.add('show');
+  } catch (e) {
+    showError('ip6');
+  }
+}
+
+function expandIPv6(addr) {
+  if (addr.includes('::')) {
+    const parts = addr.split('::');
+    const left = parts[0] ? parts[0].split(':') : [];
+    const right = parts[1] ? parts[1].split(':') : [];
+    const missing = 8 - left.length - right.length;
+    const mid = Array(missing).fill('0000');
+    const all = [...left, ...mid, ...right];
+    return all.map(g => g.padStart(4, '0')).join(':');
+  }
+  const groups = addr.split(':');
+  if (groups.length !== 8) return null;
+  return groups.map(g => g.padStart(4, '0')).join(':');
+}
+
+function getIPv6Network(expanded, prefix) {
+  const hex = expanded.replace(/:/g, '');
+  let bin = '';
+  for (let i = 0; i < hex.length; i++) bin += parseInt(hex[i], 16).toString(2).padStart(4, '0');
+  const netBin = bin.slice(0, prefix) + '0'.repeat(128 - prefix);
+  let netHex = '';
+  for (let i = 0; i < 128; i += 4) netHex += parseInt(netBin.slice(i, i + 4), 2).toString(16);
+  return netHex.match(/.{4}/g).join(':');
+}
+
+function copyText(txt) {
+  navigator.clipboard.writeText(txt).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  });
+}
+
+// Auto calc on Enter
+document.getElementById('ip4').addEventListener('keydown', e => { if (e.key === 'Enter') calcIPv4(); });
+document.getElementById('ip6').addEventListener('keydown', e => { if (e.key === 'Enter') calcIPv6(); });
+
+// Default calculation on load
+window.addEventListener('load', () => {
+  document.getElementById('ip4').value = '192.168.1.0';
+  calcIPv4();
+});
+</script>
+</body>
+</html>
