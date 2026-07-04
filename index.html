@@ -3,49 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool</title>
+<title>IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool | NetCalcTools</title>
 <meta name="description" content="Free IP Subnet Calculator for IPv4 and IPv6. Calculate network address, subnet mask, broadcast, CIDR, usable hosts and IP ranges instantly. Fast, accurate, no signup needed.">
-<meta name="keywords" content="ip subnet calculator, cidr calculator, subnet mask calculator, ipv4 calculator, ipv6 subnet calculator, network calculator, vlsm calculator">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://yoursite.com/">
+<meta name="author" content="NetCalcTools">
+<meta name="theme-color" content="#0d1117">
+<link rel="canonical" href="https://www.netcalctools.com/">
 
 <!-- Open Graph -->
 <meta property="og:title" content="IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool">
 <meta property="og:description" content="Calculate subnet masks, CIDR ranges, usable hosts and broadcast addresses instantly. Free tool for network engineers.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://yoursite.com/">
+<meta property="og:url" content="https://www.netcalctools.com/">
+<meta property="og:site_name" content="NetCalcTools">
+<meta property="og:locale" content="en_US">
 
-<!-- Schema Markup: SoftwareApplication + FAQPage -->
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool">
+<meta name="twitter:description" content="Calculate subnet masks, CIDR ranges, usable hosts and broadcast addresses instantly. Free tool for network engineers.">
+
+<!-- Schema Markup: WebSite + Organization + SoftwareApplication + FAQPage -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": "https://www.netcalctools.com/#website",
+      "url": "https://www.netcalctools.com/",
+      "name": "NetCalcTools",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.netcalctools.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.netcalctools.com/#organization",
+      "name": "NetCalcTools",
+      "url": "https://www.netcalctools.com/"
+    },
+    {
       "@type": "SoftwareApplication",
       "name": "IP Subnet Calculator",
       "applicationCategory": "NetworkingApplication",
-      "operatingSystem": "Web Browser",
+      "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "description": "Free IP Subnet Calculator supporting IPv4 and IPv6 with CIDR notation, subnet masks, usable host ranges, and broadcast addresses.",
-      "url": "https://yoursite.com/"
+      "url": "https://www.netcalctools.com/"
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is a subnet calculator?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A subnet calculator divides an IP network into smaller sub-networks. It calculates the network address, broadcast address, usable host range, and subnet mask from a given IP address and prefix length." }
+          "name": "What is a subnet mask?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A subnet mask is a 32-bit number that separates the network portion of an IP address from the host portion. For example, the subnet mask 255.255.255.0 (or /24 in CIDR) means the first 24 bits identify the network and the last 8 bits identify hosts within that network." }
         },
         {
           "@type": "Question",
-          "name": "What does /24 mean in IP addressing?",
-          "acceptedAnswer": { "@type": "Answer", "text": "/24 means 24 bits are used for the network portion, leaving 8 bits for hosts. A /24 subnet has 254 usable host addresses and a subnet mask of 255.255.255.0." }
+          "name": "What does /24 mean in networking?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A /24 prefix means 24 out of 32 bits are used for the network address. This leaves 8 bits for host addresses, allowing for 256 total IPs, of which 254 are usable. The subnet mask for /24 is 255.255.255.0." }
         },
         {
           "@type": "Question",
-          "name": "How do I calculate subnets for IPv6?",
-          "acceptedAnswer": { "@type": "Answer", "text": "For IPv6, enter your address in standard notation (e.g., 2001:db8::1) with a prefix length from /1 to /128. The calculator will show the network address, host range, and total addresses." }
+          "name": "What is the difference between IPv4 and IPv6?",
+          "acceptedAnswer": { "@type": "Answer", "text": "IPv4 uses 32-bit addresses and supports approximately 4.3 billion unique addresses. IPv6 uses 128-bit addresses, providing a vastly larger address space of 340 undecillion addresses. IPv6 also eliminates the need for NAT and simplifies routing." }
+        },
+        {
+          "@type": "Question",
+          "name": "How many usable hosts are in a /24 subnet?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A /24 subnet contains 256 IP addresses total. Of these, 254 are usable for hosts, since the network address and broadcast address are reserved and cannot be assigned to devices." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a broadcast address?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The broadcast address is the last IP address in a subnet. Packets sent to this address are received by all hosts in the subnet. For a /24 network like 192.168.1.0, the broadcast address is 192.168.1.255." }
         }
       ]
     }
@@ -87,6 +122,32 @@
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--accent);
+    color: #0d1117;
+    padding: 10px 16px;
+    border-radius: 0 0 8px 0;
+    font-weight: 700;
+    font-size: 13px;
+    z-index: 1000;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
   body {
     font-family: var(--font);
     background: var(--bg);
@@ -464,23 +525,27 @@
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
+
 <header>
   <a href="/" class="logo">
-    <div class="logo-icon">🌐</div>
+    <div class="logo-icon" aria-hidden="true">🌐</div>
     SubnetCalc
   </a>
-  <nav>
+  <nav aria-label="Primary">
     <a href="#ipv4">IPv4</a>
     <a href="#ipv6">IPv6</a>
     <a href="#table">Subnet Table</a>
     <a href="#faq">FAQ</a>
   </nav>
   <div class="header-right">
-    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle light/dark mode">☀️</button>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
+      <span aria-hidden="true">☀️</span>
+    </button>
   </div>
 </header>
 
-<main>
+<main id="main">
   <div class="hero">
     <div class="hero-badge">Free Network Tool</div>
     <h1>IP <span>Subnet</span> Calculator</h1>
@@ -488,21 +553,21 @@
   </div>
 
   <div class="tabs-wrap">
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('ipv4', this)">IPv4</button>
-      <button class="tab" onclick="switchTab('ipv6', this)">IPv6</button>
-      <button class="tab" onclick="switchTab('table', this)">Subnet Table</button>
+    <div class="tabs" role="tablist" aria-label="Calculator type">
+      <button class="tab active" id="tabbtn-ipv4" role="tab" aria-selected="true" aria-controls="tab-ipv4" onclick="switchTab('ipv4', this)">IPv4</button>
+      <button class="tab" id="tabbtn-ipv6" role="tab" aria-selected="false" aria-controls="tab-ipv6" tabindex="-1" onclick="switchTab('ipv6', this)">IPv6</button>
+      <button class="tab" id="tabbtn-table" role="tab" aria-selected="false" aria-controls="tab-table" tabindex="-1" onclick="switchTab('table', this)">Subnet Table</button>
     </div>
 
     <!-- IPv4 TAB -->
-    <div id="tab-ipv4">
+    <div id="tab-ipv4" role="tabpanel" aria-labelledby="tabbtn-ipv4">
       <div class="card" id="ipv4">
-        <div class="card-title">IPv4 Subnet Calculator</div>
+        <h2 class="card-title">IPv4 Subnet Calculator</h2>
         <div class="input-row">
           <div class="input-group">
             <label for="ip4">IP Address</label>
-            <input type="text" id="ip4" placeholder="192.168.1.0" maxlength="15" oninput="clearError('ip4')">
-            <span class="error-msg" id="ip4-err">Enter a valid IPv4 address (e.g., 192.168.1.0)</span>
+            <input type="text" id="ip4" placeholder="192.168.1.0" maxlength="15" oninput="clearError('ip4')" aria-describedby="ip4-err" aria-invalid="false" autocomplete="off">
+            <span class="error-msg" id="ip4-err" role="alert">Enter a valid IPv4 address (e.g., 192.168.1.0)</span>
           </div>
           <div class="input-group">
             <label for="cidr4">Prefix</label>
@@ -512,8 +577,8 @@
         <button class="btn-calc" onclick="calcIPv4()">Calculate Subnet</button>
       </div>
 
-      <div class="card results" id="results4">
-        <div class="card-title">Results</div>
+      <div class="card results" id="results4" aria-live="polite">
+        <h2 class="card-title">Results</h2>
         <div class="cidr-bar">
           <div class="cidr-bar-label">Bit allocation visualization</div>
           <div class="cidr-visual" id="cidr-visual"></div>
@@ -527,14 +592,14 @@
     </div>
 
     <!-- IPv6 TAB -->
-    <div id="tab-ipv6" style="display:none">
+    <div id="tab-ipv6" role="tabpanel" aria-labelledby="tabbtn-ipv6" style="display:none">
       <div class="card" id="ipv6">
-        <div class="card-title">IPv6 Subnet Calculator</div>
+        <h2 class="card-title">IPv6 Subnet Calculator</h2>
         <div class="input-row">
           <div class="input-group">
             <label for="ip6">IPv6 Address</label>
-            <input type="text" id="ip6" placeholder="2001:db8::1" oninput="clearError('ip6')">
-            <span class="error-msg" id="ip6-err">Enter a valid IPv6 address</span>
+            <input type="text" id="ip6" placeholder="2001:db8::1" oninput="clearError('ip6')" aria-describedby="ip6-err" aria-invalid="false" autocomplete="off">
+            <span class="error-msg" id="ip6-err" role="alert">Enter a valid IPv6 address</span>
           </div>
           <div class="input-group">
             <label for="cidr6">Prefix</label>
@@ -543,18 +608,19 @@
         </div>
         <button class="btn-calc" onclick="calcIPv6()">Calculate IPv6 Subnet</button>
       </div>
-      <div class="card results" id="results6">
-        <div class="card-title">IPv6 Results</div>
+      <div class="card results" id="results6" aria-live="polite">
+        <h2 class="card-title">IPv6 Results</h2>
         <div class="results-grid" id="results6-grid"></div>
       </div>
     </div>
 
     <!-- SUBNET TABLE TAB -->
-    <div id="tab-table" style="display:none">
+    <div id="tab-table" role="tabpanel" aria-labelledby="tabbtn-table" style="display:none">
       <div class="card" id="table">
-        <div class="card-title">IPv4 Subnet Reference Table</div>
+        <h2 class="card-title">IPv4 Subnet Reference Table</h2>
         <div class="table-wrap">
           <table>
+            <caption class="sr-only">IPv4 subnet reference table listing prefix, subnet mask, network bits, host bits, usable hosts, and total IPs for /1 through /32</caption>
             <thead>
               <tr>
                 <th>Prefix</th>
@@ -573,18 +639,18 @@
   </div>
 
   <!-- SEO CONTENT -->
-  <div class="content-section">
-    <h2>What is an IP Subnet Calculator?</h2>
+  <section class="content-section" aria-labelledby="about-heading">
+    <h2 id="about-heading">What is an IP Subnet Calculator?</h2>
     <p>An IP subnet calculator is a tool used by network engineers, system administrators, and IT professionals to divide an IP network into smaller, more manageable sub-networks (subnets). By entering an IP address and a prefix length (CIDR notation), the calculator instantly returns the network address, broadcast address, subnet mask, usable host range, and total number of addresses.</p>
     <h3>Why is subnetting important?</h3>
     <p>Subnetting improves network performance by reducing broadcast traffic, enhances security by isolating network segments, and allows efficient use of IP address space. It is a fundamental skill for anyone working with TCP/IP networks, whether on-premise or in cloud environments like AWS, Azure, and GCP.</p>
     <h3>How to use CIDR notation</h3>
     <p>CIDR (Classless Inter-Domain Routing) notation expresses an IP address and its network prefix together, for example <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:13px">192.168.1.0/24</code>. The number after the slash (/24) tells you how many bits are reserved for the network. The remaining bits are available for host addresses.</p>
-  </div>
+  </section>
 
   <!-- FAQ -->
-  <div class="faq-section" id="faq">
-    <h2>Frequently Asked Questions</h2>
+  <section class="faq-section" id="faq" aria-labelledby="faq-heading">
+    <h2 id="faq-heading">Frequently Asked Questions</h2>
     <details open>
       <summary>What is a subnet mask?</summary>
       <p>A subnet mask is a 32-bit number that separates the network portion of an IP address from the host portion. For example, the subnet mask 255.255.255.0 (or /24 in CIDR) means the first 24 bits identify the network and the last 8 bits identify hosts within that network.</p>
@@ -605,7 +671,7 @@
       <summary>What is a broadcast address?</summary>
       <p>The broadcast address is the last IP address in a subnet. Packets sent to this address are received by all hosts in the subnet. It is always reserved and cannot be assigned to a device. For a /24 network like 192.168.1.0, the broadcast address is 192.168.1.255.</p>
     </details>
-  </div>
+  </section>
 </main>
 
 <footer>
@@ -613,7 +679,7 @@
   <p style="margin-top:6px;font-size:11px">© 2026 SubnetCalc. Built for network engineers worldwide.</p>
 </footer>
 
-<div class="toast" id="toast">✓ Copied to clipboard</div>
+<div class="toast" id="toast" role="status" aria-live="polite">✓ Copied to clipboard</div>
 
 <script>
 // INIT
@@ -658,25 +724,52 @@ function toggleTheme() {
   const isLight = document.body.getAttribute('data-theme') === 'light';
   document.body.setAttribute('data-theme', isLight ? '' : 'light');
   localStorage.setItem('theme', isLight ? 'dark' : 'light');
-  document.querySelector('.theme-btn').textContent = isLight ? '☀️' : '🌙';
+  const btn = document.getElementById('theme-toggle-btn');
+  btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
+  btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
 }
 
 function switchTab(name, btn) {
   ['ipv4','ipv6','table'].forEach(t => {
     document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
   });
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+    b.tabIndex = -1;
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  btn.tabIndex = 0;
 }
+
+// Roving-tabindex keyboard support for the tablist (Left/Right/Home/End),
+// additive only — does not alter click behavior or switchTab() above.
+document.querySelectorAll('.tabs [role="tab"]').forEach((tab, i, tabs) => {
+  tab.addEventListener('keydown', e => {
+    let target = null;
+    if (e.key === 'ArrowRight') target = tabs[(i + 1) % tabs.length];
+    else if (e.key === 'ArrowLeft') target = tabs[(i - 1 + tabs.length) % tabs.length];
+    else if (e.key === 'Home') target = tabs[0];
+    else if (e.key === 'End') target = tabs[tabs.length - 1];
+    if (target) {
+      e.preventDefault();
+      target.focus();
+      target.click();
+    }
+  });
+});
 
 function clearError(id) {
   document.getElementById(id).classList.remove('error');
   document.getElementById(id + '-err').classList.remove('show');
+  document.getElementById(id).setAttribute('aria-invalid', 'false');
 }
 
 function showError(id) {
   document.getElementById(id).classList.add('error');
   document.getElementById(id + '-err').classList.add('show');
+  document.getElementById(id).setAttribute('aria-invalid', 'true');
 }
 
 // IPv4 CALCULATOR
