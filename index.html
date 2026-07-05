@@ -8,13 +8,13 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="NetCalcTools">
 <meta name="theme-color" content="#0d1117">
-<link rel="canonical" href="https://www.netcalctools.com/">
+<link rel="canonical" href="https://netcalctools.com/">
 
 <!-- Open Graph -->
 <meta property="og:title" content="IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool">
 <meta property="og:description" content="Calculate subnet masks, CIDR ranges, usable hosts and broadcast addresses instantly. Free tool for network engineers.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.netcalctools.com/">
+<meta property="og:url" content="https://netcalctools.com/">
 <meta property="og:site_name" content="NetCalcTools">
 <meta property="og:locale" content="en_US">
 
@@ -30,20 +30,20 @@
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://www.netcalctools.com/#website",
-      "url": "https://www.netcalctools.com/",
+      "@id": "https://netcalctools.com/#website",
+      "url": "https://netcalctools.com/",
       "name": "NetCalcTools",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.netcalctools.com/?q={search_term_string}",
+        "target": "https://netcalctools.com/?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     },
     {
       "@type": "Organization",
-      "@id": "https://www.netcalctools.com/#organization",
+      "@id": "https://netcalctools.com/#organization",
       "name": "NetCalcTools",
-      "url": "https://www.netcalctools.com/"
+      "url": "https://netcalctools.com/"
     },
     {
       "@type": "SoftwareApplication",
@@ -52,7 +52,7 @@
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "description": "Free IP Subnet Calculator supporting IPv4 and IPv6 with CIDR notation, subnet masks, usable host ranges, and broadcast addresses.",
-      "url": "https://www.netcalctools.com/"
+      "url": "https://netcalctools.com/"
     },
     {
       "@type": "FAQPage",
@@ -533,9 +533,9 @@
     SubnetCalc
   </a>
   <nav aria-label="Primary">
-    <a href="#ipv4">IPv4</a>
-    <a href="#ipv6">IPv6</a>
-    <a href="#table">Subnet Table</a>
+    <a href="#tab-ipv4" onclick="switchTab('ipv4', document.getElementById('tabbtn-ipv4'))">IPv4</a>
+    <a href="#tab-ipv6" onclick="switchTab('ipv6', document.getElementById('tabbtn-ipv6'))">IPv6</a>
+    <a href="#tab-table" onclick="switchTab('table', document.getElementById('tabbtn-table'))">Subnet Table</a>
     <a href="#faq">FAQ</a>
   </nav>
   <div class="header-right">
@@ -715,7 +715,7 @@
     const total = Math.pow(2, hostBits);
     const usable = total > 2 ? total - 2 : 0;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>/${prefix}</td><td>${m.join('.')}</td><td>${prefix}</td><td>${hostBits}</td><td>${usable.toLocaleString()}</td><td>${total.toLocaleString()}</td>`;
+    tr.innerHTML = `<td>/${prefix}</td><td>${m.join('.')}</td><td>${prefix}</td><td>${hostBits}</td><td>${usable.toLocaleString('en-US')}</td><td>${total.toLocaleString('en-US')}</td>`;
     tbody.appendChild(tr);
   });
 })();
@@ -817,8 +817,8 @@ function calcIPv4() {
     { label: 'CIDR Notation', val: intToIp(network) + '/' + prefix, highlight: true },
     { label: 'First Usable Host', val: firstHost, highlight: false },
     { label: 'Last Usable Host', val: lastHost, highlight: false },
-    { label: 'Usable Hosts', val: usableHosts.toLocaleString(), highlight: true },
-    { label: 'Total Addresses', val: totalHosts.toLocaleString(), highlight: false },
+    { label: 'Usable Hosts', val: usableHosts.toLocaleString('en-US'), highlight: true },
+    { label: 'Total Addresses', val: totalHosts.toLocaleString('en-US'), highlight: false },
     { label: 'Host Bits', val: hostBits + ' bits', highlight: false },
     { label: 'Wildcard Mask', val: intToIp(~mask >>> 0), highlight: false },
     { label: 'IP Class', val: getIPClass(ipVal), highlight: false },
@@ -858,7 +858,7 @@ function calcIPv6() {
     const expanded = expandIPv6(ipVal);
     if (!expanded) throw new Error();
     const hostBits = 128 - prefix;
-    const totalStr = hostBits > 50 ? '2^' + hostBits : Math.pow(2, hostBits).toLocaleString();
+    const totalStr = hostBits > 50 ? '2^' + hostBits : Math.pow(2, hostBits).toLocaleString('en-US');
     const netAddr = getIPv6Network(expanded, prefix);
 
     const items = [
