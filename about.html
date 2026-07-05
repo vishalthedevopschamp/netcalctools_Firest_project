@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About NetCalcTools — Free IP Subnet Calculator</title>
+<meta name="description" content="Learn about NetCalcTools, a free, fast, ad-light IP subnet calculator built for network engineers, students, and IT professionals.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0d1117">
+<link rel="canonical" href="https://www.netcalctools.com/about.html">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #30363d;
+    --accent: #00d4aa;
+    --accent2: #0077ff;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --radius: 10px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  [data-theme="light"] {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --text3: #8c959f;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--accent); color: #0d1117;
+    padding: 10px 16px; border-radius: 0 0 8px 0;
+    font-weight: 700; font-size: 13px; z-index: 1000;
+  }
+  .skip-link:focus { left: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    transition: background 0.2s, color 0.2s;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); text-decoration: none; }
+  .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  nav { display: flex; gap: 1.75rem; }
+  nav a { color: var(--text2); text-decoration: none; font-size: 14px; font-weight: 500; }
+  nav a:hover { color: var(--accent); }
+  .theme-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+  main { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+  h2 { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text); }
+  p { color: var(--text2); font-size: 15px; margin-bottom: 1rem; }
+  a.inline { color: var(--accent); text-decoration: none; }
+  a.inline:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--border); color: var(--text3); font-size: 13px; }
+  footer a { color: var(--text2); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @media (max-width: 600px) { nav { display: none; } header { padding: 0 1rem; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header>
+  <a href="/" class="logo">
+    <div class="logo-icon" aria-hidden="true">🌐</div>
+    SubnetCalc
+  </a>
+  <nav aria-label="Primary">
+    <a href="/#ipv4">IPv4</a>
+    <a href="/#ipv6">IPv6</a>
+    <a href="/#table">Subnet Table</a>
+    <a href="/#faq">FAQ</a>
+  </nav>
+  <div>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
+      <span aria-hidden="true">☀️</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <h1>About NetCalcTools</h1>
+  <p>NetCalcTools is a free IP subnet calculator built for network engineers, students, system administrators, and anyone who works with IPv4 or IPv6 addressing. Our goal is simple: give you accurate subnet calculations instantly, without ads getting in the way, without a login wall, and without unnecessary clutter.</p>
+
+  <h2>Why we built this</h2>
+  <p>Most subnet calculators online are either buried in ads, hidden behind sign-up walls, or built on outdated interfaces that are painful to use on a phone. We wanted a tool that's fast, accurate, accessible, and genuinely pleasant to use — whether you're studying for a CCNA exam, configuring a VLAN, or double-checking a CIDR range at 2 AM.</p>
+
+  <h2>What you can calculate</h2>
+  <p>NetCalcTools supports IPv4 subnetting (network address, broadcast address, usable host range, subnet mask, wildcard mask, CIDR notation) and IPv6 subnetting (network prefix, address range, total addresses). A full IPv4 subnet reference table is also available for quick lookups from /1 to /32.</p>
+
+  <h2>Accuracy</h2>
+  <p>All calculations run entirely in your browser using standard bitwise arithmetic — no data is sent to a server, and no IP address you enter is ever logged or stored.</p>
+
+  <h2>Get in touch</h2>
+  <p>Found a bug or have a feature request? We'd love to hear from you. This is an independently run tool, continuously improved based on real user feedback.</p>
+</main>
+
+<footer>
+  <p>SubnetCalc — Free IP Subnet Calculator &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/about.html">About</a></p>
+</footer>
+
+<script>
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+})();
+function toggleTheme() {
+  const isLight = document.body.getAttribute('data-theme') === 'light';
+  document.body.setAttribute('data-theme', isLight ? '' : 'light');
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+  const btn = document.getElementById('theme-toggle-btn');
+  btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
+  btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
+}
+</script>
+</body>
+</html>
