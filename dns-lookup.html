@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Lookup Tool — Check A, MX, TXT, NS & More | NetCalcTools</title>
+<meta name="description" content="Free DNS lookup tool. Check A, AAAA, CNAME, MX, TXT, NS, SOA and CAA records for any domain, compared across Cloudflare and Google DNS resolvers instantly.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="NetCalcTools">
+<meta name="application-name" content="NetCalcTools">
+<meta name="apple-mobile-web-app-title" content="NetCalcTools">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d1117">
+<link rel="canonical" href="https://netcalctools.com/dns-lookup.html">
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Graph -->
+<meta property="og:title" content="DNS Lookup Tool — Check A, MX, TXT, NS & More | NetCalcTools">
+<meta property="og:description" content="Free DNS lookup tool. Check A, AAAA, CNAME, MX, TXT, NS, SOA and CAA records for any domain, compared across Cloudflare and Google DNS resolvers instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://netcalctools.com/dns-lookup.html">
+<meta property="og:site_name" content="NetCalcTools">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://netcalctools.com/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DNS Lookup Tool — Check A, MX, TXT, NS & More | NetCalcTools">
+<meta name="twitter:description" content="Free DNS lookup tool. Check A, AAAA, CNAME, MX, TXT, NS, SOA and CAA records for any domain, compared across Cloudflare and Google DNS resolvers instantly.">
+<meta name="twitter:image" content="https://netcalctools.com/og-image.png">
+
+<!-- Schema Markup: Organization + SoftwareApplication + FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://netcalctools.com/#organization",
+      "name": "NetCalcTools",
+      "url": "https://netcalctools.com/",
+      "logo": "https://netcalctools.com/android-chrome-512.png"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "DNS Lookup Tool",
+      "applicationCategory": "NetworkingApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free DNS lookup tool that checks A, AAAA, CNAME, MX, TXT, NS, SOA and CAA records for any domain, comparing results across Cloudflare and Google DNS resolvers.",
+      "url": "https://netcalctools.com/dns-lookup.html"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a DNS lookup?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A DNS lookup queries the Domain Name System to find the records associated with a domain, such as its IP address (A/AAAA record), mail servers (MX record), or text-based configuration values (TXT record). It translates human-readable domain names into the data computers use to connect." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do Cloudflare and Google sometimes show different results?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Differences usually mean a DNS change hasn't fully propagated yet. Each resolver caches records for the duration of the TTL (Time To Live), so a resolver that queried the domain more recently may still be serving an older cached answer while another has already refreshed." }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take for DNS changes to show up everywhere?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It depends on the record's TTL setting, typically anywhere from a few minutes to 24-48 hours. Lowering the TTL a day or two before making a planned change can help new records take effect faster everywhere." }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between an A record and a CNAME record?",
+          "acceptedAnswer": { "@type": "Answer", "text": "An A record points a domain directly to an IPv4 address. A CNAME record points a domain to another domain name instead of an IP address, which is useful for subdomains that should follow whatever address the target domain currently uses." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #30363d;
+    --accent: #00d4aa;
+    --accent2: #0077ff;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --success: #1a7f4b;
+    --success-bg: #0d2818;
+    --success-text: #3fb950;
+    --error: #f85149;
+    --error-bg: #2d0f0f;
+    --warn-text: #d29922;
+    --warn-bg: #2b2211;
+    --radius: 10px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --text3: #8c959f;
+    --success-bg: #dafbe1;
+    --success-text: #1a7f37;
+    --error-bg: #ffebe9;
+    --warn-bg: #fff8c5;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--accent); color: #0d1117;
+    padding: 10px 16px; border-radius: 0 0 8px 0;
+    font-weight: 700; font-size: 13px; z-index: 1000;
+  }
+  .skip-link:focus { left: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: var(--text); text-decoration: none; }
+  .logo-icon {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .logo-text { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .theme-btn {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text2); cursor: pointer; font-size: 15px; padding: 5px 10px;
+    transition: all 0.2s;
+  }
+  .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+  nav { display: flex; gap: 4px; }
+  nav a {
+    color: var(--text2); text-decoration: none; font-size: 13px;
+    padding: 4px 8px; border-radius: 6px; transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero { text-align: center; padding: 3rem 1.5rem 2rem; max-width: 700px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block; background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.3); color: var(--accent);
+    border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.5px; margin-bottom: 1rem; text-transform: uppercase;
+  }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--text); line-height: 1.2; margin-bottom: 0.75rem; letter-spacing: -0.5px; }
+  h1 span { color: var(--accent); }
+  .hero p { color: var(--text2); font-size: 1rem; max-width: 520px; margin: 0 auto; }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .card-title {
+    font-size: 14px; font-weight: 600; color: var(--text2); text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
+  }
+  .card-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* SEARCH ROW */
+  .search-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .search-row input {
+    flex: 1; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px;
+    color: var(--text); font-size: 15px; font-family: var(--mono); padding: 12px 14px; outline: none;
+  }
+  .search-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,170,0.12); }
+  .btn-calc {
+    padding: 12px 24px; background: linear-gradient(135deg, var(--accent), #00b894);
+    border: none; border-radius: 8px; color: #0d1117; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px; white-space: nowrap;
+  }
+  .btn-calc:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,170,0.35); }
+  .btn-calc:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .check-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .check-item {
+    display: flex; align-items: center; gap: 7px; background: var(--surface2);
+    border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 14px;
+    cursor: pointer; transition: border-color 0.2s; font-size: 13px; font-weight: 600;
+  }
+  .check-item:has(input:checked) { border-color: var(--accent); color: var(--accent); }
+  .check-item input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--accent); cursor: pointer; }
+
+  /* RESULTS */
+  .status-line { font-size: 13px; color: var(--text3); margin-bottom: 14px; min-height: 18px; }
+  .record-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 14px; overflow: hidden; }
+  .record-head {
+    display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+  }
+  .record-type-badge {
+    font-family: var(--mono); font-weight: 700; font-size: 13px; color: var(--accent);
+    background: rgba(0,212,170,0.1); padding: 3px 10px; border-radius: 6px;
+  }
+  .match-pill {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .match-pill.match { background: var(--success-bg); color: var(--success-text); }
+  .match-pill.mismatch { background: var(--warn-bg); color: var(--warn-text); }
+  .match-pill.error { background: var(--error-bg); color: var(--error); }
+  .record-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .resolver-col { padding: 14px 16px; }
+  .resolver-col:first-child { border-right: 1px solid var(--border); }
+  .resolver-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .resolver-entry { font-family: var(--mono); font-size: 13px; color: var(--text); margin-bottom: 6px; word-break: break-all; }
+  .resolver-ttl { color: var(--text3); font-size: 11px; margin-left: 6px; }
+  .no-record { color: var(--text3); font-size: 13px; font-style: italic; }
+  @media (max-width: 600px) {
+    .record-body { grid-template-columns: 1fr; }
+    .resolver-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+  .copy-all-btn {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text2); cursor: pointer; font-size: 13px; padding: 8px 14px;
+    display: flex; align-items: center; gap: 6px; margin-bottom: 14px; transition: all 0.2s;
+  }
+  .copy-all-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* CONTENT */
+  .content-section { max-width: 900px; margin: 0 auto 2rem; padding: 0 1rem; }
+  .content-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+  .content-section p { color: var(--text2); font-size: 14px; line-height: 1.8; margin-bottom: 1rem; }
+  .content-section code { background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-family: var(--mono); font-size: 13px; }
+  .record-types-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13px; }
+  .record-types-table th, .record-types-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .record-types-table th { color: var(--text3); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+  .record-types-table td:first-child { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+  .record-types-table td { color: var(--text2); }
+
+  /* FAQ */
+  .faq-section { max-width: 900px; margin: 0 auto 2rem; padding: 0 1rem; }
+  .faq-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+  summary {
+    padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 14px; list-style: none;
+    display: flex; justify-content: space-between; align-items: center; color: var(--text);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--accent); font-size: 18px; font-weight: 400; }
+  details[open] summary::after { content: '−'; }
+  details p { padding: 0 18px 14px; color: var(--text2); font-size: 14px; line-height: 1.7; }
+
+  /* FOOTER */
+  footer { background: var(--surface); border-top: 1px solid var(--border); text-align: center; padding: 1.5rem; color: var(--text3); font-size: 13px; }
+  footer a { color: var(--text2); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 20px; right: 20px; background: var(--success-bg);
+    border: 1px solid var(--success-text); color: var(--success-text); padding: 10px 18px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; transform: translateY(60px);
+    opacity: 0; transition: all 0.3s; z-index: 999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: var(--error-bg); border-color: var(--error); color: var(--error); }
+
+  .spinner {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid var(--text3);
+    border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite;
+    margin-right: 6px; vertical-align: -2px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 600px) {
+    .hero { padding: 1.75rem 1rem 1.25rem; }
+    nav { display: none; }
+    header { padding: 0 1rem; }
+    .search-row { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header>
+  <a href="/" class="logo">
+    <div class="logo-icon" aria-hidden="true">
+      <svg viewBox="0 0 30 30" width="18" height="18" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NetCalcTools">
+        <path d="M7 23V7M23 23V7M7 7L23 23" fill="none" stroke="#0d1117" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="7" cy="7" r="2.3" fill="#0d1117"/>
+        <circle cx="7" cy="23" r="2.3" fill="#0d1117"/>
+        <circle cx="23" cy="7" r="2.3" fill="#0d1117"/>
+        <circle cx="23" cy="23" r="2.3" fill="#0d1117"/>
+      </svg>
+    </div>
+    <span class="logo-text">NetCalcTools</span>
+  </a>
+  <nav aria-label="Primary">
+    <a href="/">Home</a>
+    <a href="/subnet-calculator.html">Subnet Calculator</a>
+    <a href="/password-generator.html">Password Generator</a>
+  </nav>
+  <div class="header-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
+      <span aria-hidden="true">☀️</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="hero-badge">Free · Multi-Resolver Check</div>
+    <h1>DNS <span>Lookup</span> Tool</h1>
+    <p>Check A, AAAA, CNAME, MX, TXT, NS, SOA and CAA records for any domain — compared side-by-side across Cloudflare and Google DNS in one click.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="search-row">
+        <input type="text" id="domain-input" placeholder="example.com" autocomplete="off" spellcheck="false">
+        <button class="btn-calc" id="lookup-btn" onclick="runLookup()">Lookup</button>
+      </div>
+      <div class="check-grid" id="record-type-picker">
+        <label class="check-item"><input type="checkbox" value="A" checked> A</label>
+        <label class="check-item"><input type="checkbox" value="AAAA" checked> AAAA</label>
+        <label class="check-item"><input type="checkbox" value="CNAME" checked> CNAME</label>
+        <label class="check-item"><input type="checkbox" value="MX" checked> MX</label>
+        <label class="check-item"><input type="checkbox" value="TXT" checked> TXT</label>
+        <label class="check-item"><input type="checkbox" value="NS" checked> NS</label>
+        <label class="check-item"><input type="checkbox" value="SOA"> SOA</label>
+        <label class="check-item"><input type="checkbox" value="CAA"> CAA</label>
+      </div>
+    </div>
+
+    <div class="status-line" id="status-line"></div>
+    <button class="copy-all-btn" id="copy-all-btn" onclick="copyAllResults()" style="display:none">⎘ Copy all results</button>
+    <div id="results-container"></div>
+  </div>
+
+  <!-- SEO CONTENT -->
+  <section class="content-section" aria-labelledby="about-heading">
+    <h2 id="about-heading">What is a DNS lookup?</h2>
+    <p>A DNS lookup queries the Domain Name System to find out what records are associated with a domain — the IP address it points to, its mail servers, its authoritative name servers, and any text-based configuration values like SPF or domain verification codes. This tool queries two independent public resolvers, Cloudflare (1.1.1.1) and Google (8.8.8.8), and shows both results side by side so you can spot propagation delays or misconfigurations at a glance.</p>
+
+    <h2>Common DNS record types</h2>
+    <table class="record-types-table">
+      <thead><tr><th>Type</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>Points a domain to an IPv4 address</td></tr>
+        <tr><td>AAAA</td><td>Points a domain to an IPv6 address</td></tr>
+        <tr><td>CNAME</td><td>Aliases a domain to another domain name</td></tr>
+        <tr><td>MX</td><td>Specifies the mail servers responsible for the domain</td></tr>
+        <tr><td>TXT</td><td>Holds arbitrary text, commonly used for SPF, DKIM, and domain verification</td></tr>
+        <tr><td>NS</td><td>Lists the authoritative name servers for the domain</td></tr>
+        <tr><td>SOA</td><td>Stores administrative details about the DNS zone, including the refresh/retry timers</td></tr>
+        <tr><td>CAA</td><td>Specifies which certificate authorities are allowed to issue SSL certificates for the domain</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Why do results differ between resolvers?</h2>
+    <p>Every DNS record has a TTL (Time To Live) that controls how long a resolver caches it before checking again. If you recently changed a record, one resolver might already show the new value while another is still serving its cached copy until the TTL expires. This is what's commonly called "DNS propagation" — it isn't a single global event, it's each resolver independently catching up on its own schedule.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section" id="faq" aria-labelledby="faq-heading">
+    <h2 id="faq-heading">Frequently Asked Questions</h2>
+    <details>
+      <summary>What is a DNS lookup?</summary>
+      <p>A DNS lookup queries the Domain Name System to find the records associated with a domain, such as its IP address (A/AAAA record), mail servers (MX record), or text-based configuration values (TXT record). It translates human-readable domain names into the data computers use to connect.</p>
+    </details>
+    <details>
+      <summary>Why do Cloudflare and Google sometimes show different results?</summary>
+      <p>Differences usually mean a DNS change hasn't fully propagated yet. Each resolver caches records for the duration of the TTL (Time To Live), so a resolver that queried the domain more recently may still be serving an older cached answer while another has already refreshed.</p>
+    </details>
+    <details>
+      <summary>How long does it take for DNS changes to show up everywhere?</summary>
+      <p>It depends on the record's TTL setting, typically anywhere from a few minutes to 24-48 hours. Lowering the TTL a day or two before making a planned change can help new records take effect faster everywhere.</p>
+    </details>
+    <details>
+      <summary>What's the difference between an A record and a CNAME record?</summary>
+      <p>An A record points a domain directly to an IPv4 address. A CNAME record points a domain to another domain name instead of an IP address, which is useful for subdomains that should follow whatever address the target domain currently uses.</p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <p>NetCalcTools — Free Networking &amp; IT Tools &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/about.html">About</a></p>
+  <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for network engineers worldwide.</p>
+</footer>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+})();
+function toggleTheme() {
+  const isLight = document.body.getAttribute('data-theme') === 'light';
+  document.body.setAttribute('data-theme', isLight ? '' : 'light');
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+  const btn = document.getElementById('theme-toggle-btn');
+  btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
+  btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+// ============================================================
+// DNS LOOKUP CORE
+// ============================================================
+const TYPE_NUM = { A: 1, NS: 2, CNAME: 5, SOA: 6, MX: 15, TXT: 16, AAAA: 28, CAA: 257 };
+const DOMAIN_RE = /^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/;
+
+async function queryCloudflare(domain, type) {
+  const url = `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=${type}`;
+  const res = await fetch(url, { headers: { 'Accept': 'application/dns-json' } });
+  if (!res.ok) throw new Error('Cloudflare resolver error');
+  return res.json();
+}
+async function queryGoogle(domain, type) {
+  const url = `https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=${type}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Google resolver error');
+  return res.json();
+}
+
+function formatAnswerData(type, entry) {
+  // MX and SOA data need friendlier formatting; others display as-is
+  return entry.data;
+}
+
+function normalizeAnswers(json, typeNum) {
+  if (!json || json.Status === undefined) return { ok: false, entries: [] };
+  if (json.Status === 3) return { ok: true, nxdomain: true, entries: [] };
+  if (json.Status !== 0) return { ok: false, entries: [] };
+  const answers = (json.Answer || []).filter(a => a.type === typeNum);
+  return { ok: true, entries: answers.map(a => ({ data: a.data, ttl: a.TTL })) };
+}
+
+let lastResultsText = '';
+
+async function runLookup() {
+  const domainRaw = document.getElementById('domain-input').value.trim().toLowerCase();
+  const domain = domainRaw.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+  const statusLine = document.getElementById('status-line');
+  const container = document.getElementById('results-container');
+  const btn = document.getElementById('lookup-btn');
+  const copyAllBtn = document.getElementById('copy-all-btn');
+
+  if (!domain || !DOMAIN_RE.test(domain)) {
+    statusLine.textContent = 'Please enter a valid domain name, e.g. example.com';
+    statusLine.style.color = 'var(--error)';
+    container.innerHTML = '';
+    copyAllBtn.style.display = 'none';
+    return;
+  }
+
+  const selectedTypes = Array.from(document.querySelectorAll('#record-type-picker input:checked')).map(el => el.value);
+  if (selectedTypes.length === 0) {
+    statusLine.textContent = 'Select at least one record type';
+    statusLine.style.color = 'var(--error)';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Looking up…';
+  statusLine.style.color = 'var(--text3)';
+  statusLine.innerHTML = '<span class="spinner"></span> Querying Cloudflare and Google DNS…';
+  container.innerHTML = '';
+  copyAllBtn.style.display = 'none';
+
+  const results = [];
+
+  for (const type of selectedTypes) {
+    const typeNum = TYPE_NUM[type];
+    try {
+      const [cf, gg] = await Promise.all([
+        queryCloudflare(domain, type).catch(() => null),
+        queryGoogle(domain, type).catch(() => null)
+      ]);
+      const cfNorm = normalizeAnswers(cf, typeNum);
+      const ggNorm = normalizeAnswers(gg, typeNum);
+      results.push({ type, cf: cfNorm, gg: ggNorm });
+    } catch (e) {
+      results.push({ type, cf: { ok: false, entries: [] }, gg: { ok: false, entries: [] } });
+    }
+  }
+
+  renderResults(domain, results);
+  btn.disabled = false;
+  btn.textContent = 'Lookup';
+  statusLine.textContent = `Results for ${domain} — queried Cloudflare (1.1.1.1) and Google (8.8.8.8)`;
+  statusLine.style.color = 'var(--text3)';
+}
+
+function renderResults(domain, results) {
+  const container = document.getElementById('results-container');
+  const copyAllBtn = document.getElementById('copy-all-btn');
+  container.innerHTML = '';
+
+  let textDump = `DNS Lookup results for ${domain}\n${'='.repeat(40)}\n\n`;
+  let anySuccess = false;
+
+  results.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'record-card';
+
+    const cfEntries = r.cf.entries || [];
+    const ggEntries = r.gg.entries || [];
+    const cfSet = JSON.stringify(cfEntries.map(e => e.data).sort());
+    const ggSet = JSON.stringify(ggEntries.map(e => e.data).sort());
+
+    let pillClass = 'match', pillText = 'Match';
+    if (!r.cf.ok || !r.gg.ok) {
+      pillClass = 'error'; pillText = 'Error';
+    } else if (r.cf.nxdomain && r.gg.nxdomain) {
+      pillClass = 'match'; pillText = 'No Record';
+    } else if (cfEntries.length === 0 && ggEntries.length === 0) {
+      pillClass = 'match'; pillText = 'No Record';
+    } else if (cfSet !== ggSet) {
+      pillClass = 'mismatch'; pillText = 'Mismatch';
+    } else {
+      anySuccess = true;
+    }
+    if (cfEntries.length > 0 || ggEntries.length > 0) anySuccess = true;
+
+    const head = document.createElement('div');
+    head.className = 'record-head';
+    head.innerHTML = `<span class="record-type-badge">${r.type}</span><span class="match-pill ${pillClass}">${pillText}</span>`;
+    card.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'record-body';
+
+    function buildCol(label, entries, ok) {
+      const col = document.createElement('div');
+      col.className = 'resolver-col';
+      let html = `<div class="resolver-label">${label}</div>`;
+      if (!ok) {
+        html += `<div class="no-record">Query failed</div>`;
+      } else if (entries.length === 0) {
+        html += `<div class="no-record">No ${r.type} record found</div>`;
+      } else {
+        entries.forEach(e => {
+          html += `<div class="resolver-entry">${escapeHtml(e.data)}<span class="resolver-ttl">TTL ${e.ttl}s</span></div>`;
+        });
+      }
+      col.innerHTML = html;
+      return col;
+    }
+
+    body.appendChild(buildCol('Cloudflare (1.1.1.1)', cfEntries, r.cf.ok));
+    body.appendChild(buildCol('Google (8.8.8.8)', ggEntries, r.gg.ok));
+    card.appendChild(body);
+    container.appendChild(card);
+
+    textDump += `${r.type} records:\n`;
+    textDump += `  Cloudflare: ${cfEntries.length ? cfEntries.map(e => e.data).join(', ') : 'none'}\n`;
+    textDump += `  Google:     ${ggEntries.length ? ggEntries.map(e => e.data).join(', ') : 'none'}\n\n`;
+  });
+
+  lastResultsText = textDump;
+  copyAllBtn.style.display = results.length ? 'flex' : 'none';
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function copyAllResults() {
+  if (!lastResultsText) return;
+  navigator.clipboard.writeText(lastResultsText).then(() => showToast('Copied to clipboard'));
+}
+
+document.getElementById('domain-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') runLookup();
+});
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>
