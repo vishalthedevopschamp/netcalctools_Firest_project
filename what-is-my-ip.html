@@ -376,7 +376,7 @@
         <div class="ip-badges" id="ip-badges" style="display:none">
           <span class="ip-pill" id="ip-version-pill">IPv4</span>
           <span class="ip-pill neutral">Public</span>
-          <span class="ip-pill neutral" id="ip-conn-pill">Network: —</span>
+          <span class="ip-pill" id="ip-conn-pill" style="display:none">⚠ VPN / Proxy Likely</span>
         </div>
         <div class="ipv6-row">
           <span class="ip-label">IPv6:</span>
@@ -640,8 +640,13 @@ async function loadIpAndLocation() {
 
 function setConnPill(isProxy) {
   const connPill = document.getElementById('ip-conn-pill');
-  connPill.textContent = isProxy ? '⚠ VPN / Proxy Likely' : '✓ No VPN/Proxy Detected';
-  connPill.className = isProxy ? 'ip-pill' : 'ip-pill neutral';
+  if (isProxy) {
+    connPill.textContent = '⚠ VPN / Proxy Likely';
+    connPill.className = 'ip-pill';
+    connPill.style.display = '';
+  } else {
+    connPill.style.display = 'none';
+  }
 }
 
 function escapeHtml(str) {
