@@ -221,17 +221,14 @@
   .ipv6-value.none { color: var(--text3); font-style: italic; }
 
   /* INFO GRID */
-  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .info-grid { display: flex; flex-direction: column; }
   .info-row {
-    display: flex; justify-content: space-between; gap: 12px; padding: 10px 0;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 12px 0;
     border-bottom: 1px solid var(--border); font-size: 14px;
   }
-  .info-grid .info-row:nth-last-child(-n+1) { border-bottom: none; }
-  .info-label { color: var(--text3); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--text3); flex-shrink: 0; }
   .info-value { color: var(--text); font-family: var(--mono); font-size: 13px; text-align: right; word-break: break-word; }
-  @media (max-width: 640px) {
-    .info-grid { grid-template-columns: 1fr; }
-  }
 
   .status-line { font-size: 13px; color: var(--text3); margin-bottom: 14px; min-height: 18px; text-align: center; }
   .spinner {
@@ -461,7 +458,7 @@ async function loadIpAndLocation() {
       `<div class="info-row"><span class="info-label">${label}</span><span class="info-value">${escapeHtml(String(value))}</span></div>`
     ).join('');
     locStatus.style.display = 'none';
-    locGrid.style.display = 'grid';
+    locGrid.style.display = 'flex';
   } catch (e) {
     ipDisplay.textContent = 'Unavailable';
     ipSub.textContent = 'Could not reach the lookup service — try refreshing the page.';
