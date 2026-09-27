@@ -301,6 +301,8 @@
     <a href="/">Home</a>
     <a href="/subnet-calculator.html">Subnet Calculator</a>
     <a href="/password-generator.html">Password Generator</a>
+    <a href="/dns-lookup.html">DNS Lookup</a>
+    <a href="/about.html">About</a>
   </nav>
   <div class="header-right">
     <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
@@ -383,7 +385,7 @@
 </main>
 
 <footer>
-  <p>NetCalcTools — Free Networking &amp; IT Tools &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/about.html">About</a></p>
+  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator.html">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/password-generator.html">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup.html">DNS Lookup</a> &nbsp;·&nbsp; <a href="/about.html">About</a> &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a></p>
   <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for engineers worldwide.</p>
 </footer>
 
@@ -424,8 +426,54 @@ function fetchWithTimeout(url, opts = {}, ms = 3000) {
 }
 
 // ============================================================
-// IP + LOCATION LOOKUP
+// IP + LOCATION LOOKUP — tries multiple providers so a single
+// rate-limited/blocked API doesn't take the whole tool down
 // ============================================================
+async function tryIpapiCo() {
+  const res = await fetchWithTimeout('https://ipapi.co/json/', {}, 5000);
+  const d = await res.json();
+  if (d.error) throw new Error(d.reason || 'ipapi.co error');
+  return {
+    ip: d.ip, org: d.org || '', city: d.city || '', region: d.region || '',
+    country_name: d.country_name || '', country_code: d.country_code || '',
+    postal: d.postal || '', timezone: d.timezone || '', asn: d.asn || '',
+    latitude: d.latitude, longitude: d.longitude,
+    version: d.version === 'IPv6' ? 'IPv6' : 'IPv4'
+  };
+}
+
+async function tryIpwhoIs() {
+  const res = await fetchWithTimeout('https://ipwho.is/', {}, 5000);
+  const d = await res.json();
+  if (!d.success) throw new Error(d.message || 'ipwho.is error');
+  return {
+    ip: d.ip,
+    org: (d.connection && (d.connection.isp || d.connection.org)) || '',
+    city: d.city || '', region: d.region || '',
+    country_name: d.country || '', country_code: d.country_code || '',
+    postal: d.postal || '', timezone: (d.timezone && d.timezone.id) || '',
+    asn: (d.connection && d.connection.asn) ? `AS${d.connection.asn}` : '',
+    latitude: d.latitude, longitude: d.longitude,
+    version: d.type === 'IPv6' ? 'IPv6' : 'IPv4'
+  };
+}
+
+async function tryGeoJs() {
+  const res = await fetchWithTimeout('https://get.geojs.io/v1/ip/geo.json', {}, 5000);
+  const d = await res.json();
+  if (!d.ip) throw new Error('geojs.io error');
+  return {
+    ip: d.ip,
+    org: d.organization_name || d.organization || '',
+    city: d.city || '', region: d.region || '',
+    country_name: d.country || '', country_code: d.country_code || '',
+    postal: '', timezone: d.timezone || '',
+    asn: d.asn ? `AS${d.asn}` : '',
+    latitude: d.latitude, longitude: d.longitude,
+    version: (d.ip || '').includes(':') ? 'IPv6' : 'IPv4'
+  };
+}
+
 async function loadIpAndLocation() {
   const ipDisplay = document.getElementById('ip-display');
   const ipSub = document.getElementById('ip-sub');
@@ -433,12 +481,16 @@ async function loadIpAndLocation() {
   const locStatus = document.getElementById('location-status');
   const locGrid = document.getElementById('location-grid');
 
-  try {
-    const res = await fetchWithTimeout('https://ipapi.co/json/', {}, 6000);
-    const data = await res.json();
+  const providers = [tryIpapiCo, tryIpwhoIs, tryGeoJs];
+  let data = null;
+  for (const provider of providers) {
+    try {
+      const result = await provider();
+      if (result && result.ip) { data = result; break; }
+    } catch (e) { /* try next provider */ }
+  }
 
-    if (data.error) throw new Error(data.reason || 'lookup failed');
-
+  if (data) {
     currentIp = data.ip || '';
     ipDisplay.textContent = currentIp || 'Unavailable';
     copyBtn.style.display = currentIp ? 'inline-flex' : 'none';
@@ -448,7 +500,7 @@ async function loadIpAndLocation() {
       ['ISP / Organization', data.org || '—'],
       ['City', data.city || '—'],
       ['Region', data.region || '—'],
-      ['Country', data.country_name ? `${data.country_name} (${data.country_code || ''})` : '—'],
+      ['Country', data.country_name ? `${data.country_name}${data.country_code ? ' (' + data.country_code + ')' : ''}` : '—'],
       ['Postal Code', data.postal || '—'],
       ['Timezone', data.timezone || '—'],
       ['ASN', data.asn || '—'],
@@ -459,9 +511,9 @@ async function loadIpAndLocation() {
     ).join('');
     locStatus.style.display = 'none';
     locGrid.style.display = 'flex';
-  } catch (e) {
+  } else {
     ipDisplay.textContent = 'Unavailable';
-    ipSub.textContent = 'Could not reach the lookup service — try refreshing the page.';
+    ipSub.textContent = 'Could not reach any lookup service — try refreshing the page.';
     locStatus.innerHTML = 'Location lookup failed. Please refresh to try again.';
     locStatus.style.color = 'var(--error)';
   }
