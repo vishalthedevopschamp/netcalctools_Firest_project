@@ -201,24 +201,67 @@
   .card-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   /* IP DISPLAY */
+  .ip-card {
+    background: radial-gradient(ellipse at top, rgba(0,212,170,0.10), transparent 60%), var(--surface);
+    border: 1px solid rgba(0,212,170,0.35);
+    box-shadow: 0 0 0 1px rgba(0,212,170,0.05), 0 8px 30px rgba(0,212,170,0.08);
+  }
   .ip-main { text-align: center; padding: 1rem 0 1.5rem; }
-  .ip-label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+  .ip-label-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+  .ip-label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success-text); position: relative; flex-shrink: 0; }
+  .live-dot::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1.5px solid var(--success-text); animation: pulse-ring 1.8s ease-out infinite;
+  }
+  @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(1.8); opacity: 0; } }
   .ip-value {
-    font-family: var(--mono); font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 700;
-    color: var(--accent); word-break: break-all; display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--mono); font-size: clamp(1.8rem, 7vw, 2.8rem); font-weight: 800;
+    color: var(--accent); word-break: break-all; display: inline-flex; align-items: center; gap: 14px;
+    text-shadow: 0 0 24px rgba(0,212,170,0.35);
   }
   .ip-copy-btn {
     background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text2); cursor: pointer; font-size: 13px; padding: 6px 10px;
+    color: var(--text2); cursor: pointer; font-size: 13px; padding: 7px 12px;
     display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s; flex-shrink: 0;
   }
-  .ip-copy-btn:hover { color: var(--accent); border-color: var(--accent); }
-  .ip-sub { color: var(--text3); font-size: 13px; margin-top: 6px; min-height: 18px; }
+  .ip-copy-btn:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+  .ip-sub { color: var(--text3); font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+  .ip-badges { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .ip-pill {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+    padding: 4px 11px; border-radius: 20px; background: rgba(0,212,170,0.1);
+    color: var(--accent); border: 1px solid rgba(0,212,170,0.3);
+  }
+  .ip-pill.neutral { background: var(--surface2); color: var(--text2); border-color: var(--border); }
 
   .ipv6-row { display: flex; align-items: center; justify-content: center; gap: 10px; padding-top: 1rem; border-top: 1px solid var(--border); margin-top: 0.5rem; }
   .ipv6-row .ip-label { margin: 0; }
   .ipv6-value { font-family: var(--mono); font-size: 14px; color: var(--text2); word-break: break-all; }
   .ipv6-value.none { color: var(--text3); font-style: italic; }
+
+  /* PROMO: EXPLORE MORE TOOLS */
+  .promo-section { max-width: 900px; margin: 2.5rem auto; padding: 0 1rem; }
+  .promo-heading { text-align: center; margin-bottom: 1.25rem; }
+  .promo-heading h2 { font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .promo-heading p { color: var(--text3); font-size: 13px; }
+  .promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .promo-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.1rem; text-decoration: none; display: flex; flex-direction: column; gap: 6px;
+    transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
+  }
+  .promo-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 28px rgba(0,212,170,0.12); }
+  .promo-icon {
+    width: 34px; height: 34px; border-radius: 8px; margin-bottom: 4px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .promo-card h3 { font-size: 14.5px; font-weight: 700; color: var(--text); }
+  .promo-card p { color: var(--text2); font-size: 12.5px; line-height: 1.5; }
+  .promo-card .promo-cta { color: var(--accent); font-size: 12px; font-weight: 700; margin-top: 2px; }
+  @media (max-width: 700px) { .promo-grid { grid-template-columns: 1fr; } }
 
   /* INFO GRID */
   .info-grid { display: flex; flex-direction: column; }
@@ -319,14 +362,22 @@
   </div>
 
   <div class="wrap">
-    <div class="card">
+    <div class="card ip-card">
       <div class="ip-main">
-        <div class="ip-label">Your Public IP Address</div>
+        <div class="ip-label-row">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="ip-label">Your Public IP Address</span>
+        </div>
         <div class="ip-value">
           <span id="ip-display">Detecting…</span>
           <button class="ip-copy-btn" id="copy-ip-btn" onclick="copyIp()" style="display:none">⎘ Copy</button>
         </div>
         <div class="ip-sub" id="ip-sub"></div>
+        <div class="ip-badges" id="ip-badges" style="display:none">
+          <span class="ip-pill" id="ip-version-pill">IPv4</span>
+          <span class="ip-pill neutral">Public</span>
+          <span class="ip-pill neutral" id="ip-conn-pill">Network: —</span>
+        </div>
         <div class="ipv6-row">
           <span class="ip-label">IPv6:</span>
           <span class="ipv6-value" id="ipv6-display">Checking…</span>
@@ -345,6 +396,40 @@
       <div class="info-grid" id="browser-grid"></div>
     </div>
   </div>
+
+  <!-- PROMO: OTHER TOOLS -->
+  <section class="promo-section" aria-labelledby="promo-heading">
+    <div class="promo-heading">
+      <h2 id="promo-heading">More free networking tools</h2>
+      <p>No signup, no ads — everything runs instantly in your browser</p>
+    </div>
+    <div class="promo-grid">
+      <a href="/subnet-calculator.html" class="promo-card">
+        <div class="promo-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0d1117"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0d1117"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0d1117"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0d1117"/></svg>
+        </div>
+        <h3>IP Subnet Calculator</h3>
+        <p>Network address, broadcast, CIDR range and usable hosts for IPv4 &amp; IPv6.</p>
+        <span class="promo-cta">Open tool →</span>
+      </a>
+      <a href="/password-generator.html" class="promo-card">
+        <div class="promo-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="#0d1117" stroke-width="2"/><path d="M8 10V7a4 4 0 018 0v3" fill="none" stroke="#0d1117" stroke-width="2"/></svg>
+        </div>
+        <h3>Password Generator</h3>
+        <p>Cryptographically random passwords and passphrases with a live strength meter.</p>
+        <span class="promo-cta">Open tool →</span>
+      </a>
+      <a href="/dns-lookup.html" class="promo-card">
+        <div class="promo-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" fill="none" stroke="#0d1117" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18" fill="none" stroke="#0d1117" stroke-width="2"/></svg>
+        </div>
+        <h3>DNS Lookup Tool</h3>
+        <p>Check A, AAAA, MX, TXT &amp; more — compared across Cloudflare and Google DNS.</p>
+        <span class="promo-cta">Open tool →</span>
+      </a>
+    </div>
+  </section>
 
   <!-- SEO CONTENT -->
   <section class="content-section" aria-labelledby="about-heading">
@@ -442,35 +527,35 @@ async function tryIpapiCo() {
   };
 }
 
-async function tryIpwhoIs() {
-  const res = await fetchWithTimeout('https://ipwho.is/', {}, 5000);
+async function tryIpSb() {
+  const res = await fetchWithTimeout('https://api.ip.sb/geoip', {}, 5000);
   const d = await res.json();
-  if (!d.success) throw new Error(d.message || 'ipwho.is error');
+  if (!d.ip) throw new Error('ip.sb error');
   return {
     ip: d.ip,
-    org: (d.connection && (d.connection.isp || d.connection.org)) || '',
+    org: d.isp || d.organization || '',
     city: d.city || '', region: d.region || '',
     country_name: d.country || '', country_code: d.country_code || '',
-    postal: d.postal || '', timezone: (d.timezone && d.timezone.id) || '',
-    asn: (d.connection && d.connection.asn) ? `AS${d.connection.asn}` : '',
-    latitude: d.latitude, longitude: d.longitude,
-    version: d.type === 'IPv6' ? 'IPv6' : 'IPv4'
-  };
-}
-
-async function tryGeoJs() {
-  const res = await fetchWithTimeout('https://get.geojs.io/v1/ip/geo.json', {}, 5000);
-  const d = await res.json();
-  if (!d.ip) throw new Error('geojs.io error');
-  return {
-    ip: d.ip,
-    org: d.organization_name || d.organization || '',
-    city: d.city || '', region: d.region || '',
-    country_name: d.country || '', country_code: d.country_code || '',
-    postal: '', timezone: d.timezone || '',
+    postal: d.postal_code || '', timezone: d.timezone || '',
     asn: d.asn ? `AS${d.asn}` : '',
     latitude: d.latitude, longitude: d.longitude,
     version: (d.ip || '').includes(':') ? 'IPv6' : 'IPv4'
+  };
+}
+
+async function tryFreeIpApi() {
+  const res = await fetchWithTimeout('https://freeipapi.com/api/json/', {}, 5000);
+  const d = await res.json();
+  if (!d.ipAddress) throw new Error('freeipapi.com error');
+  return {
+    ip: d.ipAddress,
+    org: d.asnOrganization || '', city: d.cityName || '', region: d.regionName || '',
+    country_name: d.countryName || '', country_code: d.countryCode || '',
+    postal: d.zipCode || '', timezone: d.timeZone || '',
+    asn: d.asn ? `AS${d.asn}` : '',
+    latitude: d.latitude, longitude: d.longitude,
+    version: d.ipVersion === 6 ? 'IPv6' : 'IPv4',
+    isProxy: typeof d.isProxy === 'boolean' ? d.isProxy : null
   };
 }
 
@@ -480,8 +565,11 @@ async function loadIpAndLocation() {
   const copyBtn = document.getElementById('copy-ip-btn');
   const locStatus = document.getElementById('location-status');
   const locGrid = document.getElementById('location-grid');
+  const badgesWrap = document.getElementById('ip-badges');
+  const versionPill = document.getElementById('ip-version-pill');
+  const connPill = document.getElementById('ip-conn-pill');
 
-  const providers = [tryIpapiCo, tryIpwhoIs, tryGeoJs];
+  const providers = [tryIpapiCo, tryIpSb, tryFreeIpApi];
   let data = null;
   for (const provider of providers) {
     try {
@@ -495,6 +583,9 @@ async function loadIpAndLocation() {
     ipDisplay.textContent = currentIp || 'Unavailable';
     copyBtn.style.display = currentIp ? 'inline-flex' : 'none';
     ipSub.textContent = data.version === 'IPv6' ? 'Detected over IPv6' : 'Detected over IPv4';
+
+    versionPill.textContent = data.version === 'IPv6' ? 'IPv6' : 'IPv4';
+    badgesWrap.style.display = 'flex';
 
     const rows = [
       ['ISP / Organization', data.org || '—'],
@@ -511,6 +602,18 @@ async function loadIpAndLocation() {
     ).join('');
     locStatus.style.display = 'none';
     locGrid.style.display = 'flex';
+
+    // If the winning provider already told us about VPN/proxy, show it now.
+    if (typeof data.isProxy === 'boolean') {
+      setConnPill(data.isProxy);
+    } else {
+      // Otherwise, ask freeipapi.com quietly in the background just for this flag —
+      // it's the only provider that reports it, so it's non-blocking and best-effort.
+      tryFreeIpApi().then(d2 => {
+        if (typeof d2.isProxy === 'boolean') setConnPill(d2.isProxy);
+        else connPill.style.display = 'none';
+      }).catch(() => { connPill.style.display = 'none'; });
+    }
   } else {
     ipDisplay.textContent = 'Unavailable';
     ipSub.textContent = 'Could not reach any lookup service — try refreshing the page.';
@@ -533,6 +636,12 @@ async function loadIpAndLocation() {
     ipv6El.textContent = 'Not detected on this network';
     ipv6El.classList.add('none');
   }
+}
+
+function setConnPill(isProxy) {
+  const connPill = document.getElementById('ip-conn-pill');
+  connPill.textContent = isProxy ? '⚠ VPN / Proxy Likely' : '✓ No VPN/Proxy Detected';
+  connPill.className = isProxy ? 'ip-pill' : 'ip-pill neutral';
 }
 
 function escapeHtml(str) {
