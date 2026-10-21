@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool | NetCalcTools</title>
-<meta name="description" content="Free IP Subnet Calculator for IPv4 and IPv6. Calculate network address, subnet mask, broadcast, CIDR, usable hosts and IP ranges instantly. Fast, accurate, no signup needed.">
+<meta name="description" content="Free IPv4 and IPv6 subnet calculator: network address, subnet mask, broadcast, CIDR, usable hosts and IP ranges instantly. Fast, accurate, no signup.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="NetCalcTools">
 <meta name="application-name" content="NetCalcTools">
@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0d1117">
-<link rel="canonical" href="https://netcalctools.com/subnet-calculator.html">
+<link rel="canonical" href="https://netcalctools.com/subnet-calculator">
 
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -25,7 +25,7 @@
 <meta property="og:title" content="IP Subnet Calculator — Free IPv4 & IPv6 CIDR Tool | NetCalcTools">
 <meta property="og:description" content="Calculate subnet masks, CIDR ranges, usable hosts and broadcast addresses instantly. Free tool for network engineers.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://netcalctools.com/subnet-calculator.html">
+<meta property="og:url" content="https://netcalctools.com/subnet-calculator">
 <meta property="og:site_name" content="NetCalcTools">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://netcalctools.com/og-image.png">
@@ -55,7 +55,7 @@
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "description": "Free IP Subnet Calculator supporting IPv4 and IPv6 with CIDR notation, subnet masks, usable host ranges, and broadcast addresses.",
-      "url": "https://netcalctools.com/subnet-calculator.html"
+      "url": "https://netcalctools.com/subnet-calculator"
     },
     {
       "@type": "FAQPage",
@@ -91,6 +91,7 @@
 }
 </script>
 
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <style>
   :root {
     --bg: #0d1117;
@@ -530,6 +531,7 @@
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
+  @media (max-width: 900px) { nav { gap: 1rem; } }
 </style>
 </head>
 <body>
@@ -559,10 +561,11 @@
   </a>
   <nav aria-label="Primary">
     <a href="/">Home</a>
-    <a href="/password-generator.html">Password Generator</a>
-    <a href="/dns-lookup.html">DNS Lookup</a>
-    <a href="/what-is-my-ip.html">What Is My IP</a>
-    <a href="/about.html">About</a>
+    <a href="/password-generator">Password Generator</a>
+    <a href="/dns-lookup">DNS Lookup</a>
+    <a href="/what-is-my-ip">What Is My IP</a>
+    <a href="/about">About</a>
+    <a href="/guides">Guides</a>
   </nav>
   <div class="header-right">
     <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
@@ -701,7 +704,7 @@
 </main>
 
 <footer>
-  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/password-generator.html">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup.html">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip.html">What Is My IP</a> &nbsp;·&nbsp; <a href="/about.html">About</a> &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a></p>
+  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/wildcard-mask-calculator">Wildcard Mask Calculator</a> &nbsp;·&nbsp; <a href="/password-generator">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip">What Is My IP</a> &nbsp;·&nbsp; <a href="/mac-address-lookup">MAC Lookup</a> &nbsp;·&nbsp; <a href="/guides">Guides</a> &nbsp;·&nbsp; <a href="/about">About</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></p>
   <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for engineers worldwide.</p>
 </footer>
 
@@ -710,8 +713,6 @@
 <script>
 // INIT
 (function() {
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
   
   // Populate CIDR dropdowns
   const sel4 = document.getElementById('cidr4');
@@ -746,11 +747,21 @@
   });
 })();
 
+(function() {
+  var light = document.documentElement.getAttribute('data-theme') === 'light';
+  var btn = document.getElementById('theme-toggle-btn');
+  if (btn) {
+    btn.querySelector('span').textContent = light ? '🌙' : '☀️';
+    btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  }
+})();
+
 function toggleTheme() {
-  const isLight = document.body.getAttribute('data-theme') === 'light';
-  document.body.setAttribute('data-theme', isLight ? '' : 'light');
-  localStorage.setItem('theme', isLight ? 'dark' : 'light');
-  const btn = document.getElementById('theme-toggle-btn');
+  var root = document.documentElement;
+  var isLight = root.getAttribute('data-theme') === 'light';
+  if (isLight) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', 'light');
+  try { localStorage.setItem('theme', isLight ? 'dark' : 'light'); } catch (e) {}
+  var btn = document.getElementById('theme-toggle-btn');
   btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
   btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
 }

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NetCalcTools — Free Networking & IT Tools for Engineers</title>
-<meta name="description" content="Free, fast, ad-light tools for network engineers and IT professionals — IP subnet calculator, password generator, and more. No signup, no data collection.">
+<meta name="description" content="Free, ad-free tools for network engineers and IT pros: subnet calculator, password generator, DNS lookup, IP and MAC lookup, and subnetting guides.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="NetCalcTools">
 <meta name="application-name" content="NetCalcTools">
@@ -23,7 +23,7 @@
 
 <!-- Open Graph -->
 <meta property="og:title" content="NetCalcTools — Free Networking & IT Tools for Engineers">
-<meta property="og:description" content="Free, fast, ad-light tools for network engineers and IT professionals — IP subnet calculator, password generator, and more.">
+<meta property="og:description" content="Free, ad-free tools for network engineers and IT pros: subnet calculator, password generator, DNS lookup, IP and MAC lookup, and subnetting guides.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://netcalctools.com/">
 <meta property="og:site_name" content="NetCalcTools">
@@ -33,7 +33,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NetCalcTools — Free Networking & IT Tools for Engineers">
-<meta name="twitter:description" content="Free, fast, ad-light tools for network engineers and IT professionals — IP subnet calculator, password generator, and more.">
+<meta name="twitter:description" content="Free, ad-free tools for network engineers and IT pros: subnet calculator, password generator, DNS lookup, IP and MAC lookup, and subnetting guides.">
 <meta name="twitter:image" content="https://netcalctools.com/og-image.png">
 
 <!-- Schema Markup: WebSite + Organization + ItemList of tools -->
@@ -45,12 +45,7 @@
       "@type": "WebSite",
       "@id": "https://netcalctools.com/#website",
       "url": "https://netcalctools.com/",
-      "name": "NetCalcTools",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://netcalctools.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "name": "NetCalcTools"
     },
     {
       "@type": "Organization",
@@ -67,25 +62,37 @@
           "@type": "ListItem",
           "position": 1,
           "name": "IP Subnet Calculator",
-          "url": "https://netcalctools.com/subnet-calculator.html"
+          "url": "https://netcalctools.com/subnet-calculator"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Password Generator",
-          "url": "https://netcalctools.com/password-generator.html"
+          "url": "https://netcalctools.com/password-generator"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "DNS Lookup Tool",
-          "url": "https://netcalctools.com/dns-lookup.html"
+          "url": "https://netcalctools.com/dns-lookup"
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "What Is My IP",
-          "url": "https://netcalctools.com/what-is-my-ip.html"
+          "url": "https://netcalctools.com/what-is-my-ip"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Wildcard Mask Calculator",
+          "url": "https://netcalctools.com/wildcard-mask-calculator"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "MAC Address Lookup",
+          "url": "https://netcalctools.com/mac-address-lookup"
         }
       ]
     }
@@ -93,6 +100,7 @@
 }
 </script>
 
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <style>
   :root {
     --bg: #0d1117;
@@ -235,6 +243,7 @@
     header { padding: 0 1rem; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 900px) { nav { gap: 1rem; } }
 </style>
 </head>
 <body>
@@ -263,11 +272,12 @@
     <span class="logo-text">NetCalcTools</span>
   </a>
   <nav aria-label="Primary">
-    <a href="/subnet-calculator.html">Subnet Calculator</a>
-    <a href="/password-generator.html">Password Generator</a>
-    <a href="/dns-lookup.html">DNS Lookup</a>
-    <a href="/what-is-my-ip.html">What Is My IP</a>
-    <a href="/about.html">About</a>
+    <a href="/subnet-calculator">Subnet Calculator</a>
+    <a href="/password-generator">Password Generator</a>
+    <a href="/dns-lookup">DNS Lookup</a>
+    <a href="/what-is-my-ip">What Is My IP</a>
+    <a href="/about">About</a>
+    <a href="/guides">Guides</a>
   </nav>
   <div class="header-right">
     <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
@@ -280,14 +290,14 @@
   <div class="hero">
     <div class="hero-badge">Free · No Signup · No Ads</div>
     <h1>Tools built for <span>engineers</span></h1>
-    <p>Fast, accurate, ad-light utilities for networking and IT work — subnetting, security, and more. Everything runs in your browser; nothing is ever logged or stored.</p>
+    <p>Fast, accurate, ad-free utilities for networking and IT work: subnetting, security, DNS, and more. Most tools run entirely in your browser; the DNS and IP tools use outside services, explained in our <a href="/privacy" style="color:var(--accent);text-decoration:none">Privacy Policy</a>.</p>
   </div>
 
   <div class="tools-wrap">
     <div class="section-label">Available Tools</div>
     <div class="tools-grid">
 
-      <a href="/subnet-calculator.html" class="tool-card">
+      <a href="/subnet-calculator" class="tool-card">
         <div class="tool-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="9" width="13" height="6" rx="1.5" fill="#0d1117"/>
@@ -300,7 +310,7 @@
         <span class="tool-cta">Open tool <span class="arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a href="/password-generator.html" class="tool-card">
+      <a href="/password-generator" class="tool-card">
         <div class="tool-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx="8" cy="8" r="5" fill="none" stroke="#0d1117" stroke-width="2.2"/>
@@ -313,7 +323,7 @@
         <span class="tool-cta">Open tool <span class="arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a href="/dns-lookup.html" class="tool-card">
+      <a href="/dns-lookup" class="tool-card">
         <div class="tool-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="9" fill="none" stroke="#0d1117" stroke-width="2"/>
@@ -326,7 +336,7 @@
         <span class="tool-cta">Open tool <span class="arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a href="/what-is-my-ip.html" class="tool-card">
+      <a href="/what-is-my-ip" class="tool-card">
         <div class="tool-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="3.2" fill="#0d1117"/>
@@ -336,6 +346,26 @@
         <span class="tool-badge">Networking</span>
         <h2>What Is My IP</h2>
         <p>See your public IPv4 and IPv6 address, ISP, approximate location, and browser details instantly.</p>
+        <span class="tool-cta">Open tool <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/wildcard-mask-calculator" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="6" height="6" rx="1.5" fill="#0d1117" opacity="0.55"/><rect x="10" y="9" width="11" height="6" rx="1.5" fill="#0d1117"/></svg>
+        </div>
+        <span class="tool-badge">Networking</span>
+        <h2>Wildcard Mask Calculator</h2>
+        <p>Convert prefix lengths and subnet masks to the wildcard masks used in Cisco ACLs and OSPF, and back.</p>
+        <span class="tool-cta">Open tool <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/mac-address-lookup" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="10" rx="2" fill="none" stroke="#0d1117" stroke-width="2"/><path d="M7 11h.01M11 11h.01M15 11h.01M7 14h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="tool-badge">Networking</span>
+        <h2>MAC Address Lookup</h2>
+        <p>Identify the hardware vendor behind any MAC address using the IEEE OUI registry. Runs in your browser.</p>
         <span class="tool-cta">Open tool <span class="arrow" aria-hidden="true">→</span></span>
       </a>
 
@@ -357,17 +387,70 @@
         <p>Check whether a specific port is open on a given host — useful for debugging connectivity issues.</p>
       </div>
 
-      <div class="tool-card coming-soon">
+
+    </div>
+    <div class="section-label">Guides</div>
+    <div class="tools-grid">
+
+      <a href="/subnet-mask-cheat-sheet" class="tool-card">
         <div class="tool-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="7" width="18" height="10" rx="2" fill="none" stroke="#8b949e" stroke-width="2"/>
-            <path d="M7 11h.01M11 11h.01M15 11h.01M7 14h6" stroke="#8b949e" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="#0d1117" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <span class="tool-badge soon">Coming Soon</span>
-        <h2>MAC Address Lookup</h2>
-        <p>Identify the hardware vendor behind any MAC address using the OUI prefix.</p>
-      </div>
+        <span class="tool-badge">Guide</span>
+        <h2>Subnet Mask Cheat Sheet</h2>
+        <p>Every CIDR prefix from /8 to /32 with its subnet mask, wildcard mask, and host count, plus when to use each.</p>
+        <span class="tool-cta">Open guide <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/private-ip-ranges" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="#0d1117" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="tool-badge">Guide</span>
+        <h2>Private IP Ranges</h2>
+        <p>The RFC 1918 ranges, CGNAT, link-local, and loopback explained, with examples and common mistakes.</p>
+        <span class="tool-cta">Open guide <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/24-subnet" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="#0d1117" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="tool-badge">Guide</span>
+        <h2>/24 Subnet Explained</h2>
+        <p>255.255.255.0, 254 usable hosts, and how to split a /24 into smaller networks.</p>
+        <span class="tool-cta">Open guide <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/27-subnet" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="#0d1117" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="tool-badge">Guide</span>
+        <h2>/27 Subnet Explained</h2>
+        <p>Thirty usable hosts in blocks of 32: all eight /27 subnets in a /24, and where they fit.</p>
+        <span class="tool-cta">Open guide <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/16-subnet" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="#0d1117" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="tool-badge">Guide</span>
+        <h2>/16 Subnet Explained</h2>
+        <p>65,534 usable hosts and 256 possible /24s: how to plan a large address block.</p>
+        <span class="tool-cta">Open guide <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="/guides" class="tool-card">
+        <div class="tool-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h8l4 4v14H6z" fill="none" stroke="#0d1117" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="#0d1117" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="tool-badge">Guide</span>
+        <h2>All guides</h2>
+        <p>Browse every NetCalcTools guide in one place.</p>
+        <span class="tool-cta">Open guide <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
 
     </div>
   </div>
@@ -375,26 +458,32 @@
   <!-- SEO CONTENT -->
   <section class="content-section" aria-labelledby="about-heading">
     <h2 id="about-heading">Why NetCalcTools?</h2>
-    <p>NetCalcTools is a growing collection of free, focused utilities for network engineers, system administrators, students, and anyone working with IP addressing, DNS, or basic security hygiene. Every tool is designed to be fast, accurate, and free of clutter — no sign-up walls, no intrusive ads, and no unnecessary data collection.</p>
-    <p>All calculations and generation happen entirely in your browser. Nothing you enter is ever transmitted to a server or stored — see our <a href="/privacy.html" style="color:var(--accent);text-decoration:none">Privacy Policy</a> for details.</p>
+    <p>NetCalcTools is a growing collection of free, focused utilities for network engineers, system administrators, students, and anyone working with IP addressing, DNS, or basic security hygiene. Every tool is designed to be fast, accurate, and free of clutter — no sign-up walls, no ads, and no accounts.</p>
+    <p>The subnet calculator, wildcard mask calculator, password generator, and MAC address lookup run entirely in your browser, so what you type is never sent to us. DNS Lookup sends the domain you query to Cloudflare and Google's public DNS resolvers, and What Is My IP asks third-party IP lookup services for your public address and approximate location. See our <a href="/privacy" style="color:var(--accent);text-decoration:none">Privacy Policy</a> for details on each tool.</p>
   </section>
 </main>
 
 <footer>
-  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator.html">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/password-generator.html">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup.html">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip.html">What Is My IP</a> &nbsp;·&nbsp; <a href="/about.html">About</a> &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a></p>
+  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/wildcard-mask-calculator">Wildcard Mask Calculator</a> &nbsp;·&nbsp; <a href="/password-generator">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip">What Is My IP</a> &nbsp;·&nbsp; <a href="/mac-address-lookup">MAC Lookup</a> &nbsp;·&nbsp; <a href="/guides">Guides</a> &nbsp;·&nbsp; <a href="/about">About</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></p>
   <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for engineers worldwide.</p>
 </footer>
 
 <script>
 (function() {
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+  var light = document.documentElement.getAttribute('data-theme') === 'light';
+  var btn = document.getElementById('theme-toggle-btn');
+  if (btn) {
+    btn.querySelector('span').textContent = light ? '🌙' : '☀️';
+    btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  }
 })();
+
 function toggleTheme() {
-  const isLight = document.body.getAttribute('data-theme') === 'light';
-  document.body.setAttribute('data-theme', isLight ? '' : 'light');
-  localStorage.setItem('theme', isLight ? 'dark' : 'light');
-  const btn = document.getElementById('theme-toggle-btn');
+  var root = document.documentElement;
+  var isLight = root.getAttribute('data-theme') === 'light';
+  if (isLight) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', 'light');
+  try { localStorage.setItem('theme', isLight ? 'dark' : 'light'); } catch (e) {}
+  var btn = document.getElementById('theme-toggle-btn');
   btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
   btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
 }

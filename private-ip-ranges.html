@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private IP Ranges: RFC 1918, CGNAT, Link-Local — NetCalcTools</title>
+<meta name="description" content="The private IPv4 and IPv6 ranges explained: RFC 1918, 100.64.0.0/10 CGNAT, link-local, loopback, and how to avoid overlapping networks.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="NetCalcTools">
+<meta name="application-name" content="NetCalcTools">
+<meta name="apple-mobile-web-app-title" content="NetCalcTools">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d1117">
+<link rel="canonical" href="https://netcalctools.com/private-ip-ranges">
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Private IP Ranges: RFC 1918, CGNAT, Link-Local — NetCalcTools">
+<meta property="og:description" content="The private IPv4 and IPv6 ranges explained: RFC 1918, 100.64.0.0/10 CGNAT, link-local, loopback, and how to avoid overlapping networks.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://netcalctools.com/private-ip-ranges">
+<meta property="og:site_name" content="NetCalcTools">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://netcalctools.com/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Private IP Ranges: RFC 1918, CGNAT, Link-Local — NetCalcTools">
+<meta name="twitter:description" content="The private IPv4 and IPv6 ranges explained: RFC 1918, 100.64.0.0/10 CGNAT, link-local, loopback, and how to avoid overlapping networks.">
+<meta name="twitter:image" content="https://netcalctools.com/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://netcalctools.com/#organization",
+      "name": "NetCalcTools",
+      "url": "https://netcalctools.com/",
+      "logo": "https://netcalctools.com/android-chrome-512.png"
+    },
+    {
+      "@type": "Article",
+      "headline": "Private IP Address Ranges Explained",
+      "description": "The private IPv4 and IPv6 ranges explained: RFC 1918, 100.64.0.0/10 CGNAT, link-local, loopback, and how to avoid overlapping networks.",
+      "url": "https://netcalctools.com/private-ip-ranges",
+      "mainEntityOfPage": "https://netcalctools.com/private-ip-ranges",
+      "dateModified": "2026-10-16",
+      "datePublished": "2026-10-16",
+      "image": "https://netcalctools.com/og-image.png",
+      "author": {
+        "@id": "https://netcalctools.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://netcalctools.com/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://netcalctools.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://netcalctools.com/guides"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Private IP Ranges",
+          "item": "https://netcalctools.com/private-ip-ranges"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is 172.32.0.1 a private IP address?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The private 172 range is 172.16.0.0/12, which covers 172.16.0.0 through 172.31.255.255. 172.32.0.1 is outside it and is a public address."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is 192.168.1.1 a public or private address?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is private. It belongs to 192.168.0.0/16 and is the default gateway address on many home routers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can two companies use the same private IP range?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, and many do. Private ranges are not unique across organizations, which is why they cannot be routed on the internet and why overlaps cause trouble when networks are connected."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does a 169.254.x.x address mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is a link-local address a device assigns itself when it cannot get an address from DHCP. It usually points to a connection or DHCP server problem."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #30363d;
+    --accent: #00d4aa;
+    --accent2: #0077ff;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --radius: 10px;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  [data-theme="light"] {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text2: #57606a;
+    --text3: #8c959f;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--accent); color: #0d1117;
+    padding: 10px 16px; border-radius: 0 0 8px 0;
+    font-weight: 700; font-size: 13px; z-index: 1000;
+  }
+  .skip-link:focus { left: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    transition: background 0.2s, color 0.2s;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); text-decoration: none; }
+  .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .logo-text { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+  .logo-sep { color: var(--text3); font-weight: 400; }
+  .logo-product { color: var(--text2); font-weight: 500; font-size: 13px; }
+  nav { display: flex; gap: 1.75rem; }
+  nav a { color: var(--text2); text-decoration: none; font-size: 14px; font-weight: 500; }
+  nav a:hover { color: var(--accent); }
+  .theme-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+  main { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+  h2 { font-size: 1.25rem; font-weight: 700; margin: 2rem 0 0.75rem; color: var(--text); }
+  p { color: var(--text2); font-size: 15px; margin-bottom: 1rem; }
+  ul { color: var(--text2); font-size: 15px; margin: 0 0 1rem 1.25rem; }
+  li { margin-bottom: 0.5rem; }
+  a.inline { color: var(--accent); text-decoration: none; }
+  a.inline:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--border); color: var(--text3); font-size: 13px; }
+  footer a { color: var(--text2); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @media (max-width: 600px) { nav { display: none; } header { padding: 0 1rem; } .logo-sep, .logo-product { display: none; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 900px) { nav { gap: 1rem; } }
+
+  :root { --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; --error: #f85149; --error-bg: #2d0f0f; --success-text: #3fb950; }
+  [data-theme="light"] { --error-bg: #ffebe9; --success-text: #1a7f37; }
+  main.wide { max-width: 820px; }
+  h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text); }
+  ul, ol { color: var(--text2); font-size: 15px; margin: 0 0 1rem 1.25rem; }
+  li { margin-bottom: 0.45rem; }
+  code { font-family: var(--mono); font-size: 0.9em; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; color: var(--text); }
+  .pre { font-family: var(--mono); font-size: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; overflow-x: auto; color: var(--text); margin: 0 0 1rem; white-space: pre; line-height: 1.6; }
+  .callout { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 12px 16px; margin: 0 0 1.25rem; }
+  .callout p { margin: 0; font-size: 14px; }
+  .table-wrap { overflow-x: auto; margin: 0 0 1.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--surface2); color: var(--text2); font-size: 12px; font-weight: 600; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 9px 12px; font-family: var(--mono); font-size: 12.5px; color: var(--text); white-space: nowrap; }
+  tbody td:first-child { font-family: var(--font); font-weight: 600; color: var(--accent); }
+  td.wrap { white-space: normal; font-family: var(--font); color: var(--text2); }
+  .crumbs { font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; }
+  .crumbs a { color: var(--text2); text-decoration: none; }
+  .crumbs a:hover { color: var(--accent); }
+  .lede { font-size: 1.05rem; }
+  .related { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 0 0 1.5rem; }
+  .related a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 14px; }
+  .related a:hover { border-color: var(--accent); }
+  .related a span { display: block; font-weight: 400; color: var(--text2); font-size: 13px; margin-top: 2px; }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+  summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 14px; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; color: var(--accent); font-size: 18px; font-weight: 400; }
+  details[open] summary::after { content: '−'; }
+  details p { padding: 0 18px 14px; margin: 0; color: var(--text2); font-size: 14px; line-height: 1.7; }
+  summary:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* tool UI (same look as the subnet calculator) */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--text2); letter-spacing: 0.3px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  input[type="text"], select, textarea { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; font-family: var(--mono); padding: 10px 14px; outline: none; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; }
+  textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+  select { font-family: var(--font); cursor: pointer; }
+  input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,170,0.12); }
+  input.error, textarea.error { border-color: var(--error); box-shadow: 0 0 0 3px rgba(248,81,73,0.12); }
+  .err-msg { display: none; color: var(--error); font-size: 12px; margin-top: 2px; }
+  .err-msg.show { display: block; }
+  .btn-calc { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent), #00b894); border: none; border-radius: 8px; color: #0d1117; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .btn-calc:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,170,0.35); }
+  .results { display: none; margin-top: 1.25rem; }
+  .results.show { display: block; }
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .result-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+  .result-item.highlight { border-color: var(--accent); background: rgba(0,212,170,0.05); }
+  .result-label { font-size: 11px; color: var(--text3); letter-spacing: 0.4px; margin-bottom: 4px; font-weight: 600; }
+  .result-value { font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 600; word-break: break-all; display: flex; align-items: center; gap: 6px; }
+  .copy-btn { background: none; border: 1px solid var(--border); color: var(--text2); cursor: pointer; font-size: 11px; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; }
+  .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .note { font-size: 13px; color: var(--text2); background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+  .note.warn { border-color: #d29922; }
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent); color: #0d1117; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700; opacity: 0; pointer-events: none; transition: all 0.25s; z-index: 200; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { nav { gap: 1rem; } }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header>
+  <a href="/" class="logo">
+    <div class="logo-icon" aria-hidden="true">
+      <svg viewBox="0 0 30 30" width="18" height="18" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NetCalcTools">
+        <path d="M7 23V7M23 23V7M7 7L23 23" fill="none" stroke="#0d1117" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="7" cy="7" r="2.3" fill="#0d1117"/>
+        <circle cx="7" cy="23" r="2.3" fill="#0d1117"/>
+        <circle cx="23" cy="7" r="2.3" fill="#0d1117"/>
+        <circle cx="23" cy="23" r="2.3" fill="#0d1117"/>
+      </svg>
+    </div>
+    <span class="logo-text">NetCalcTools</span>
+  </a>
+  <nav aria-label="Primary">
+    <a href="/">Home</a>
+    <a href="/subnet-calculator">Subnet Calculator</a>
+    <a href="/password-generator">Password Generator</a>
+    <a href="/dns-lookup">DNS Lookup</a>
+    <a href="/what-is-my-ip">What Is My IP</a>
+    <a href="/guides">Guides</a>
+  </nav>
+  <div>
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
+      <span aria-hidden="true">☀️</span>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="wide">
+  <div class="crumbs" role="navigation" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/guides">Guides</a> / Private IP Ranges</div>
+  <h1>Private IP Address Ranges Explained</h1>
+  <p class="lede">Private IP addresses are reserved for use inside networks and are never routed on the public internet. The home router, office LAN, VPN, or cloud VPC you work with is almost certainly built on them. This page lists the ranges that matter, what each one is for, and the overlaps that cause real outages.</p>
+
+  <section aria-labelledby="v4-heading">
+    <h2 id="v4-heading">IPv4 private and special-use ranges</h2>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Range</th><th scope="col">First – last address</th><th scope="col">Addresses</th><th scope="col">Defined in</th><th scope="col">Purpose</th></tr></thead><tbody><tr><td>10.0.0.0/8</td><td>10.0.0.0 – 10.255.255.255</td><td>16,777,216</td><td>RFC 1918</td><td><span style="font-family:var(--font);color:var(--text2)">Private networks (largest block)</span></td></tr><tr><td>172.16.0.0/12</td><td>172.16.0.0 – 172.31.255.255</td><td>1,048,576</td><td>RFC 1918</td><td><span style="font-family:var(--font);color:var(--text2)">Private networks (medium block)</span></td></tr><tr><td>192.168.0.0/16</td><td>192.168.0.0 – 192.168.255.255</td><td>65,536</td><td>RFC 1918</td><td><span style="font-family:var(--font);color:var(--text2)">Private networks (home and small office)</span></td></tr><tr><td>100.64.0.0/10</td><td>100.64.0.0 – 100.127.255.255</td><td>4,194,304</td><td>RFC 6598</td><td><span style="font-family:var(--font);color:var(--text2)">Carrier-grade NAT shared space</span></td></tr><tr><td>169.254.0.0/16</td><td>169.254.0.0 – 169.254.255.255</td><td>65,536</td><td>RFC 3927</td><td><span style="font-family:var(--font);color:var(--text2)">Link-local (self-assigned)</span></td></tr><tr><td>127.0.0.0/8</td><td>127.0.0.0 – 127.255.255.255</td><td>16,777,216</td><td>RFC 1122</td><td><span style="font-family:var(--font);color:var(--text2)">Loopback</span></td></tr><tr><td>192.0.2.0/24</td><td>192.0.2.0 – 192.0.2.255</td><td>256</td><td>RFC 5737</td><td><span style="font-family:var(--font);color:var(--text2)">Documentation (TEST-NET-1)</span></td></tr><tr><td>198.51.100.0/24</td><td>198.51.100.0 – 198.51.100.255</td><td>256</td><td>RFC 5737</td><td><span style="font-family:var(--font);color:var(--text2)">Documentation (TEST-NET-2)</span></td></tr><tr><td>203.0.113.0/24</td><td>203.0.113.0 – 203.0.113.255</td><td>256</td><td>RFC 5737</td><td><span style="font-family:var(--font);color:var(--text2)">Documentation (TEST-NET-3)</span></td></tr></tbody></table></div>
+  </section>
+
+  <section aria-labelledby="rfc1918-heading">
+    <h2 id="rfc1918-heading">The three RFC 1918 ranges</h2>
+    <p>RFC 1918 reserves three blocks for private use: 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16. Anyone can use them without asking, which is also the catch: thousands of organizations use the same addresses, so they can never be routed across the public internet.</p>
+    <p>As a rule of thumb, 192.168.0.0/16 is what home routers and small offices use, 10.0.0.0/8 is what enterprises and cloud networks use because it offers 16.7 million addresses, and 172.16.0.0/12 sits in between. Be careful with the middle range: it ends at 172.31.255.255. Addresses such as 172.15.0.1 and 172.32.0.1 are <em>public</em>, a classic mistake when someone assumes everything starting with 172 is private.</p>
+    <h3>A quick test for any address</h3>
+    <ul>
+      <li>First octet is 10: private.</li>
+      <li>First octet is 172 and the second octet is between 16 and 31: private.</li>
+      <li>First two octets are 192.168: private.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="cgnat-heading">
+    <h2 id="cgnat-heading">100.64.0.0/10 and carrier-grade NAT</h2>
+    <p>The 100.64.0.0/10 block is not part of RFC 1918. It is shared address space meant for internet providers that run carrier-grade NAT, where many customers sit behind one public address. If your router's WAN address falls between 100.64.0.0 and 100.127.255.255, your provider is doing NAT on top of your own, and inbound port forwarding from the internet will not work. You can confirm this by comparing the WAN address in your router with what <a href="/what-is-my-ip" class="inline">What Is My IP</a> reports.</p>
+  </section>
+
+  <section aria-labelledby="linklocal-heading">
+    <h2 id="linklocal-heading">Link-local and loopback</h2>
+    <p>A device that cannot reach a DHCP server will often assign itself an address in 169.254.0.0/16 (Windows calls this APIPA). Seeing a 169.254.x.x address on a computer is a strong sign that DHCP failed, usually because of a cable, a VLAN, or a DHCP server problem. These addresses only work on the local link and are never routed.</p>
+    <p>The entire 127.0.0.0/8 block loops back to the local machine, not only 127.0.0.1. Services listening on 127.0.0.1 are reachable only from the host itself, which makes loopback a useful way to keep a database or admin interface off the network.</p>
+  </section>
+
+  <section aria-labelledby="overlap-heading">
+    <h2 id="overlap-heading">Planning around overlaps</h2>
+    <p>Overlapping ranges are the most common private addressing problem. Two networks can only be joined by a VPN, a peering connection, or a merger if their ranges do not overlap, and renumbering a live network is painful.</p>
+    <ul>
+      <li><strong>Home and office collide.</strong> Most home routers default to 192.168.0.0/24 or 192.168.1.0/24. A remote worker's VPN to an office that also uses 192.168.1.0/24 will route traffic to the wrong place.</li>
+      <li><strong>Container defaults.</strong> Docker's default bridge network uses 172.17.0.0/16, which can overlap with corporate networks that use the 172.16.0.0/12 range.</li>
+      <li><strong>Cloud defaults.</strong> The default VPC in an AWS region uses 172.31.0.0/16. If you connect it to an on-premises network that uses the same space, routing breaks.</li>
+    </ul>
+    <p>For anything that might ever connect to another network, pick from 10.0.0.0/8 with a less obvious second octet, allocate a /16 per site or region, carve /24s from it for VLANs, and record the plan in a spreadsheet or an IPAM tool. Avoid 192.168.0.0/24, 192.168.1.0/24, 10.0.0.0/24, and 10.0.1.0/24, because everyone else picked those first. The <a href="/16-subnet" class="inline">/16 guide</a> shows how to divide a block this way.</p>
+  </section>
+
+  <section aria-labelledby="nat-heading">
+    <h2 id="nat-heading">How private addresses reach the internet</h2>
+    <p>Devices with private addresses reach the internet through network address translation (NAT). The router rewrites the source address of outgoing packets to its own public address and keeps a table so replies find their way back. This is why every device in a house shares one public IP, and why a private address on its own tells you nothing about where a device is on the internet.</p>
+  </section>
+
+  <section aria-labelledby="v6-heading">
+    <h2 id="v6-heading">IPv6 equivalents</h2>
+    <p>IPv6 has no need for NAT-style address shortage, but it still reserves special ranges. Unique local addresses (fc00::/7, in practice fd00::/8) play the role of RFC 1918 and are not routed on the internet. Every IPv6 interface also has a link-local address in fe80::/10, which is used for neighbor discovery and routing protocol adjacencies.</p>
+    <div class="table-wrap"><table><thead><tr><th scope="col">Range</th><th scope="col">Defined in</th><th scope="col">Purpose</th></tr></thead><tbody><tr><td>fc00::/7</td><td>RFC 4193</td><td><span style="font-family:var(--font);color:var(--text2)">Unique local addresses (in practice fd00::/8 is used)</span></td></tr><tr><td>fe80::/10</td><td>RFC 4291</td><td><span style="font-family:var(--font);color:var(--text2)">Link-local</span></td></tr><tr><td>::1/128</td><td>RFC 4291</td><td><span style="font-family:var(--font);color:var(--text2)">Loopback</span></td></tr><tr><td>2001:db8::/32</td><td>RFC 3849</td><td><span style="font-family:var(--font);color:var(--text2)">Documentation</span></td></tr></tbody></table></div>
+  </section>
+
+  <section aria-labelledby="related-heading">
+    <h2 id="related-heading">Related tools and guides</h2>
+    <div class="related"><a href="/subnet-calculator">Subnet Calculator<span>Work out any network, broadcast, and host range</span></a><a href="/subnet-mask-cheat-sheet">Subnet Mask Cheat Sheet<span>CIDR /8 to /32 reference</span></a><a href="/24-subnet">/24 Subnet Explained<span>255.255.255.0 and 254 hosts</span></a><a href="/what-is-my-ip">What Is My IP<span>See your public address</span></a></div>
+  </section>
+
+  <section aria-labelledby="faq-heading">
+    <h2 id="faq-heading">Frequently asked questions</h2>
+    <details>
+      <summary>Is 172.32.0.1 a private IP address?</summary>
+      <p>No. The private 172 range is 172.16.0.0/12, which covers 172.16.0.0 through 172.31.255.255. 172.32.0.1 is outside it and is a public address.</p>
+    </details>
+    <details>
+      <summary>Is 192.168.1.1 a public or private address?</summary>
+      <p>It is private. It belongs to 192.168.0.0/16 and is the default gateway address on many home routers.</p>
+    </details>
+    <details>
+      <summary>Can two companies use the same private IP range?</summary>
+      <p>Yes, and many do. Private ranges are not unique across organizations, which is why they cannot be routed on the internet and why overlaps cause trouble when networks are connected.</p>
+    </details>
+    <details>
+      <summary>What does a 169.254.x.x address mean?</summary>
+      <p>It is a link-local address a device assigns itself when it cannot get an address from DHCP. It usually points to a connection or DHCP server problem.</p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/wildcard-mask-calculator">Wildcard Mask Calculator</a> &nbsp;·&nbsp; <a href="/password-generator">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip">What Is My IP</a> &nbsp;·&nbsp; <a href="/mac-address-lookup">MAC Lookup</a> &nbsp;·&nbsp; <a href="/guides">Guides</a> &nbsp;·&nbsp; <a href="/about">About</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></p>
+  <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for engineers worldwide.</p>
+</footer>
+
+<div id="toast" role="status" aria-live="polite">Copied!</div>
+<script>
+(function() {
+  var light = document.documentElement.getAttribute('data-theme') === 'light';
+  var btn = document.getElementById('theme-toggle-btn');
+  if (btn) {
+    btn.querySelector('span').textContent = light ? '🌙' : '☀️';
+    btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  }
+})();
+
+function toggleTheme() {
+  var root = document.documentElement;
+  var isLight = root.getAttribute('data-theme') === 'light';
+  if (isLight) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', 'light');
+  try { localStorage.setItem('theme', isLight ? 'dark' : 'light'); } catch (e) {}
+  var btn = document.getElementById('theme-toggle-btn');
+  btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
+  btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
+}
+</script>
+
+</body>
+</html>

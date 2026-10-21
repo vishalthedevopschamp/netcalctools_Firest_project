@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0d1117">
-<link rel="canonical" href="https://netcalctools.com/privacy.html">
+<link rel="canonical" href="https://netcalctools.com/privacy">
 
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -25,7 +25,7 @@
 <meta property="og:title" content="Privacy Policy — NetCalcTools">
 <meta property="og:description" content="Privacy Policy for NetCalcTools. Learn what data we collect and how your information is handled when using our free networking and IT tools.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://netcalctools.com/privacy.html">
+<meta property="og:url" content="https://netcalctools.com/privacy">
 <meta property="og:site_name" content="NetCalcTools">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://netcalctools.com/og-image.png">
@@ -35,6 +35,7 @@
 <meta name="twitter:title" content="Privacy Policy — NetCalcTools">
 <meta name="twitter:description" content="Privacy Policy for NetCalcTools. Learn what data we collect and how your information is handled when using our free networking and IT tools.">
 <meta name="twitter:image" content="https://netcalctools.com/og-image.png">
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <style>
   :root {
     --bg: #0d1117;
@@ -103,6 +104,7 @@
   footer a:hover { color: var(--accent); }
   @media (max-width: 600px) { nav { display: none; } header { padding: 0 1rem; } .logo-sep, .logo-product { display: none; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 900px) { nav { gap: 1rem; } }
 </style>
 </head>
 <body>
@@ -124,10 +126,11 @@
   </a>
   <nav aria-label="Primary">
     <a href="/">Home</a>
-    <a href="/subnet-calculator.html">Subnet Calculator</a>
-    <a href="/password-generator.html">Password Generator</a>
-    <a href="/dns-lookup.html">DNS Lookup</a>
-    <a href="/what-is-my-ip.html">What Is My IP</a>
+    <a href="/subnet-calculator">Subnet Calculator</a>
+    <a href="/password-generator">Password Generator</a>
+    <a href="/dns-lookup">DNS Lookup</a>
+    <a href="/what-is-my-ip">What Is My IP</a>
+    <a href="/guides">Guides</a>
   </nav>
   <div>
     <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
@@ -138,49 +141,64 @@
 
 <main id="main">
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated: July 6, 2026</p>
+  <p class="updated">Last updated: October 16, 2026</p>
 
-  <p>NetCalcTools ("we," "our," or "the site") is committed to protecting your privacy. This policy explains what information is and is not collected when you use our free tools.</p>
+  <p>NetCalcTools ("we," "our," or "the site") is committed to protecting your privacy. This policy explains, tool by tool, what happens to the information you enter and what is and is not collected when you use the site.</p>
 
-  <h2>Data you enter into our tools</h2>
-  <p>Any IP address, prefix, subnet mask, or other value you type into the Subnet Calculator — and any options you select in the Password Generator — is processed entirely within your own browser using client-side JavaScript. This data (including generated passwords) is never transmitted to our servers, never logged, and never stored anywhere. Closing or refreshing the page clears it completely.</p>
+  <h2>Tools that run entirely in your browser</h2>
+  <p>The <a href="/subnet-calculator" class="inline">Subnet Calculator</a>, <a href="/wildcard-mask-calculator" class="inline">Wildcard Mask Calculator</a>, <a href="/password-generator" class="inline">Password Generator</a>, and <a href="/mac-address-lookup" class="inline">MAC Address Lookup</a> process everything locally with JavaScript. The addresses, masks, MAC addresses and options you enter, and any passwords you generate, are never transmitted to our servers, never logged, and never stored. Closing or refreshing the page clears them. The MAC Address Lookup downloads a vendor database file from this site once and searches it on your device.</p>
+
+  <h2>Tools that use third-party services</h2>
+  <p>Two tools cannot work without contacting outside services. In both cases your browser connects to those services directly, and NetCalcTools does not receive, store, or log what is sent.</p>
+  <ul>
+    <li><strong>DNS Lookup:</strong> the domain name and record type you enter are sent to the public DNS-over-HTTPS resolvers operated by Cloudflare (cloudflare-dns.com) and Google (dns.google). Like any web request, it also reveals your IP address to them.</li>
+    <li><strong>What Is My IP:</strong> to show your public IP address, ISP, and approximate location, your browser contacts third-party IP lookup services, currently ipapi.co, ipify, ip.sb, and freeipapi.com. They see your IP address, as any website you visit does, and return the details displayed on the page. The browser and device information shown on that page is read locally and not sent anywhere.</li>
+  </ul>
+  <p>Each of these services has its own privacy policy and logging practices, which we do not control. If you prefer not to use them, do not use these two tools.</p>
 
   <h2>Local storage</h2>
-  <p>We use your browser's local storage to remember one thing only: your light/dark theme preference. This stays on your device and is never sent to us.</p>
+  <p>We use your browser's local storage to remember one thing only: your light/dark theme preference. It stays on your device and is never sent to us.</p>
 
-  <h2>Cookies and tracking</h2>
-  <p>NetCalcTools does not use tracking cookies and does not run third-party advertising scripts at this time. If this changes in the future, this policy will be updated accordingly.</p>
+  <h2>Cookies, tracking, and advertising</h2>
+  <p>NetCalcTools does not set tracking cookies and does not run advertising scripts. The site currently contains no ads and no affiliate links. If that changes, sponsored or affiliate content will be clearly labeled and this policy will be updated before it goes live. Our hosting provider may set technical cookies needed for security and delivery (see below).</p>
 
   <h2>Analytics</h2>
-  <p>We may use privacy-respecting analytics tools to understand aggregate traffic patterns (such as which pages are visited and approximate geographic region). This data is anonymized and is not used to identify individual visitors.</p>
+  <p>We may use privacy-focused, cookie-less analytics (such as Cloudflare Web Analytics) to understand aggregate traffic, for example which pages are visited and the approximate region of visitors. This data is not used to identify individual visitors. If we add an analytics service, we will name it here.</p>
 
   <h2>Third-party hosting</h2>
-  <p>This site is hosted on Cloudflare Pages, which may process standard connection metadata (such as IP address and request logs) as part of delivering the site to you. This is standard for any website and is governed by Cloudflare's own privacy practices.</p>
+  <p>This site is hosted on Cloudflare Pages, which may process standard connection metadata (such as IP address and request logs) and may set technical cookies for security and delivery. This is standard for any website and is governed by Cloudflare's own privacy practices.</p>
 
   <h2>Children's privacy</h2>
   <p>This site is a technical tool intended for general audiences and does not knowingly collect personal information from children.</p>
 
   <h2>Changes to this policy</h2>
-  <p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated "Last updated" date.</p>
+  <p>We may update this Privacy Policy from time to time. Changes will be reflected on this page with an updated "Last updated" date.</p>
 
   <h2>Contact</h2>
-  <p>If you have questions about this Privacy Policy, please reach out via the contact details on our <a href="/about.html" class="inline">About page</a>.</p>
+  <p>If you have questions about this Privacy Policy, email <a href="mailto:hello@netcalctools.com" class="inline">hello@netcalctools.com</a>. You can also read more about the project on the <a href="/about" class="inline">About page</a>.</p>
 </main>
 
 <footer>
-  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator.html">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/password-generator.html">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup.html">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip.html">What Is My IP</a> &nbsp;·&nbsp; <a href="/about.html">About</a></p>
+  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/wildcard-mask-calculator">Wildcard Mask Calculator</a> &nbsp;·&nbsp; <a href="/password-generator">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip">What Is My IP</a> &nbsp;·&nbsp; <a href="/mac-address-lookup">MAC Lookup</a> &nbsp;·&nbsp; <a href="/guides">Guides</a> &nbsp;·&nbsp; <a href="/about">About</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></p>
+  <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for engineers worldwide.</p>
 </footer>
 
 <script>
 (function() {
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+  var light = document.documentElement.getAttribute('data-theme') === 'light';
+  var btn = document.getElementById('theme-toggle-btn');
+  if (btn) {
+    btn.querySelector('span').textContent = light ? '🌙' : '☀️';
+    btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  }
 })();
+
 function toggleTheme() {
-  const isLight = document.body.getAttribute('data-theme') === 'light';
-  document.body.setAttribute('data-theme', isLight ? '' : 'light');
-  localStorage.setItem('theme', isLight ? 'dark' : 'light');
-  const btn = document.getElementById('theme-toggle-btn');
+  var root = document.documentElement;
+  var isLight = root.getAttribute('data-theme') === 'light';
+  if (isLight) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', 'light');
+  try { localStorage.setItem('theme', isLight ? 'dark' : 'light'); } catch (e) {}
+  var btn = document.getElementById('theme-toggle-btn');
   btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
   btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
 }

@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0d1117">
-<link rel="canonical" href="https://netcalctools.com/what-is-my-ip.html">
+<link rel="canonical" href="https://netcalctools.com/what-is-my-ip">
 
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -25,7 +25,7 @@
 <meta property="og:title" content="What Is My IP Address? — Free IP Lookup Tool | NetCalcTools">
 <meta property="og:description" content="Instantly find your public IPv4 and IPv6 address, ISP, approximate location, and browser details. Free, fast, no signup required.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://netcalctools.com/what-is-my-ip.html">
+<meta property="og:url" content="https://netcalctools.com/what-is-my-ip">
 <meta property="og:site_name" content="NetCalcTools">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://netcalctools.com/og-image.png">
@@ -55,7 +55,7 @@
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "description": "Free tool that shows your public IPv4 and IPv6 address, ISP, approximate location, and browser/device details.",
-      "url": "https://netcalctools.com/what-is-my-ip.html"
+      "url": "https://netcalctools.com/what-is-my-ip"
     },
     {
       "@type": "FAQPage",
@@ -91,6 +91,7 @@
 }
 </script>
 
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <style>
   :root {
     --bg: #0d1117;
@@ -321,6 +322,7 @@
     header { padding: 0 1rem; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 900px) { nav { gap: 1rem; } }
 </style>
 </head>
 <body>
@@ -342,10 +344,11 @@
   </a>
   <nav aria-label="Primary">
     <a href="/">Home</a>
-    <a href="/subnet-calculator.html">Subnet Calculator</a>
-    <a href="/password-generator.html">Password Generator</a>
-    <a href="/dns-lookup.html">DNS Lookup</a>
-    <a href="/about.html">About</a>
+    <a href="/subnet-calculator">Subnet Calculator</a>
+    <a href="/password-generator">Password Generator</a>
+    <a href="/dns-lookup">DNS Lookup</a>
+    <a href="/about">About</a>
+    <a href="/guides">Guides</a>
   </nav>
   <div class="header-right">
     <button class="theme-btn" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Switch to light mode">
@@ -401,10 +404,10 @@
   <section class="promo-section" aria-labelledby="promo-heading">
     <div class="promo-heading">
       <h2 id="promo-heading">More free networking tools</h2>
-      <p>No signup, no ads — everything runs instantly in your browser</p>
+      <p>No signup, no ads. Free tools and guides for networking and IT work</p>
     </div>
     <div class="promo-grid">
-      <a href="/subnet-calculator.html" class="promo-card">
+      <a href="/subnet-calculator" class="promo-card">
         <div class="promo-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="#0d1117"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="#0d1117"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="#0d1117"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="#0d1117"/></svg>
         </div>
@@ -412,7 +415,7 @@
         <p>Network address, broadcast, CIDR range and usable hosts for IPv4 &amp; IPv6.</p>
         <span class="promo-cta">Open tool →</span>
       </a>
-      <a href="/password-generator.html" class="promo-card">
+      <a href="/password-generator" class="promo-card">
         <div class="promo-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="#0d1117" stroke-width="2"/><path d="M8 10V7a4 4 0 018 0v3" fill="none" stroke="#0d1117" stroke-width="2"/></svg>
         </div>
@@ -420,7 +423,7 @@
         <p>Cryptographically random passwords and passphrases with a live strength meter.</p>
         <span class="promo-cta">Open tool →</span>
       </a>
-      <a href="/dns-lookup.html" class="promo-card">
+      <a href="/dns-lookup" class="promo-card">
         <div class="promo-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" fill="none" stroke="#0d1117" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18" fill="none" stroke="#0d1117" stroke-width="2"/></svg>
         </div>
@@ -432,6 +435,11 @@
   </section>
 
   <!-- SEO CONTENT -->
+  <section class="content-section" aria-labelledby="data-handling-heading">
+    <h2 id="data-handling-heading">How this tool works</h2>
+    <p>To find your public IP address, ISP, and approximate location, your browser contacts third-party lookup services (ipapi.co, ipify, ip.sb, and freeipapi.com). They see your IP address, as any website you visit does, and return the details shown above. The browser and device information on this page is read locally and not sent anywhere. NetCalcTools does not store your result. See the <a href="/privacy" style="color:var(--accent);text-decoration:none">Privacy Policy</a> for details.</p>
+  </section>
+
   <section class="content-section" aria-labelledby="about-heading">
     <h2 id="about-heading">What is an IP address?</h2>
     <p>An IP address is the number your device uses to send and receive data on the internet, similar to a return address on a letter. The address shown above is your <strong>public IP</strong> — the one your router presents to the outside world. Every device inside your home network typically shares this same public address while each has its own separate <strong>private IP</strong> (like <code>192.168.1.5</code>) for talking to other devices on the local network.</p>
@@ -470,7 +478,7 @@
 </main>
 
 <footer>
-  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator.html">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/password-generator.html">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup.html">DNS Lookup</a> &nbsp;·&nbsp; <a href="/about.html">About</a> &nbsp;·&nbsp; <a href="/privacy.html">Privacy Policy</a></p>
+  <p><a href="/">Home</a> &nbsp;·&nbsp; <a href="/subnet-calculator">Subnet Calculator</a> &nbsp;·&nbsp; <a href="/wildcard-mask-calculator">Wildcard Mask Calculator</a> &nbsp;·&nbsp; <a href="/password-generator">Password Generator</a> &nbsp;·&nbsp; <a href="/dns-lookup">DNS Lookup</a> &nbsp;·&nbsp; <a href="/what-is-my-ip">What Is My IP</a> &nbsp;·&nbsp; <a href="/mac-address-lookup">MAC Lookup</a> &nbsp;·&nbsp; <a href="/guides">Guides</a> &nbsp;·&nbsp; <a href="/about">About</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a></p>
   <p style="margin-top:6px;font-size:11px">© 2026 NetCalcTools. Built for engineers worldwide.</p>
 </footer>
 
@@ -478,14 +486,20 @@
 
 <script>
 (function() {
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') document.body.setAttribute('data-theme', 'light');
+  var light = document.documentElement.getAttribute('data-theme') === 'light';
+  var btn = document.getElementById('theme-toggle-btn');
+  if (btn) {
+    btn.querySelector('span').textContent = light ? '🌙' : '☀️';
+    btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  }
 })();
+
 function toggleTheme() {
-  const isLight = document.body.getAttribute('data-theme') === 'light';
-  document.body.setAttribute('data-theme', isLight ? '' : 'light');
-  localStorage.setItem('theme', isLight ? 'dark' : 'light');
-  const btn = document.getElementById('theme-toggle-btn');
+  var root = document.documentElement;
+  var isLight = root.getAttribute('data-theme') === 'light';
+  if (isLight) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', 'light');
+  try { localStorage.setItem('theme', isLight ? 'dark' : 'light'); } catch (e) {}
+  var btn = document.getElementById('theme-toggle-btn');
   btn.querySelector('span').textContent = isLight ? '☀️' : '🌙';
   btn.setAttribute('aria-label', isLight ? 'Switch to light mode' : 'Switch to dark mode');
 }

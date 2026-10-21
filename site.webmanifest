@@ -1,7 +1,7 @@
 {
   "name": "NetCalcTools",
   "short_name": "NetCalcTools",
-  "description": "Free tools for network engineers and IT professionals — IP subnet calculator, password generator, and more.",
+  "description": "Free, ad-free networking tools and guides: subnet calculator, wildcard mask calculator, password generator, DNS lookup, IP lookup, and MAC address lookup.",
   "icons": [
     {
       "src": "/android-chrome-192.png",
